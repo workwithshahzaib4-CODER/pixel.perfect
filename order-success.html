@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmed - Pixel Perfect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="order-success">
+    <header class="site-header">
+      <div class="container nav-shell">
+        <button class="menu-button" aria-label="Open menu">Menu</button>
+        <a class="brand" href="index.html" aria-label="Pixel Perfect home">
+          <span class="brand-wordmark">PIXEL PERFECT</span>
+        </a>
+        <div class="header-actions">
+          <a href="index.html" class="header-link">Home</a>
+          <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-panel">
+        <button class="close-menu" aria-label="Close menu">Close</button>
+        <nav class="mobile-nav">
+          <a href="index.html">Home</a>
+          <a href="category.html?category=Best%20Wall%20Setup%20Packs">Best Wall Setup Packs</a>
+          <a href="category.html?category=Concept%20Cars">Concept Cars</a>
+          <a href="category.html?category=Bikes">Bikes</a>
+          <a href="category.html?category=Motivational">Motivational</a>
+          <a href="cart.html">Cart</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="page-shell">
+      <section class="container order-success-container">
+        <div id="orderSuccessState"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p>Pixel Perfect</p>
+        <p>Custom posters • wall setup packs • premium prints</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

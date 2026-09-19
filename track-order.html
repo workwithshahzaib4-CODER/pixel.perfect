@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Track Order - Pixel Perfect</title>
+    <meta name="description" content="Track your Pixel Perfect poster order." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="track-order">
+    <header class="site-header">
+      <div class="container nav-shell">
+        <button class="menu-button" aria-label="Open menu">Menu</button>
+        <a class="brand" href="index.html" aria-label="Pixel Perfect home"><span class="brand-wordmark">PIXEL PERFECT</span></a>
+        <div class="header-actions">
+          <a href="index.html" class="header-link">Home</a>
+          <a href="category.html?category=all" class="header-link">Shop</a>
+          <a href="track-order.html" class="header-link">Track Order</a>
+          <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-panel">
+        <button class="close-menu" aria-label="Close menu">Close</button>
+        <nav class="mobile-nav">
+          <a href="index.html">Home</a>
+          <a href="category.html?category=all">Shop</a>
+          <a href="track-order.html">Track Order</a>
+          <a href="cart.html">Cart</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="page-shell">
+      <section class="container track-order-shell">
+        <div class="track-order-intro">
+          <span class="eyebrow">Order tracking</span>
+          <h1>Where is your order?</h1>
+          <p>Enter your order ID and the phone number used at checkout.</p>
+        </div>
+        <form id="trackOrderForm" class="track-order-form" novalidate>
+          <label><span>Order ID or Tracking ID</span><input type="text" name="orderId" placeholder="Example: PPTRK-ABC123" required /></label>
+          <label><span>Phone number</span><input type="tel" name="phone" placeholder="Your checkout phone number" inputmode="tel" required /></label>
+          <button class="primary-button" type="submit">Track Order</button>
+        </form>
+        <div id="trackOrderResult" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-content"><p>Pixel Perfect</p><p>Custom posters • wall setup packs • premium prints</p></div></footer>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compare Products - Pixel Perfect</title>
+    <meta name="description" content="Compare products side-by-side and make the best choice for your wall setup." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="compare">
+    <header class="site-header">
+      <div class="container nav-shell">
+        <button class="menu-button" aria-label="Open menu">Menu</button>
+
+        <a class="brand" href="index.html" aria-label="Pixel Perfect home">
+          <span class="brand-wordmark">PIXEL PERFECT</span>
+        </a>
+
+        <div class="header-actions">
+          <a href="index.html" class="header-link">Home</a>
+          <a href="category.html?category=all" class="header-link">Shop</a>
+          <a href="category.html?category=all" class="header-link">Collections</a>
+          <a href="index.html#customer-reviews" class="header-link">Reviews</a>
+          <a href="track-order.html" class="header-link">Track Order</a>
+          <a href="support.html" class="header-link">Support</a>
+          <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-panel">
+        <button class="close-menu" aria-label="Close menu">Close</button>
+        <nav class="mobile-nav">
+          <a href="index.html">Home</a>
+          <a href="category.html?category=all">Shop</a>
+          <a href="category.html?category=all">Collections</a>
+          <a href="index.html#customer-reviews">Reviews</a>
+          <a href="track-order.html">Track Order</a>
+          <a href="support.html">Support</a>
+          <a href="cart.html">Cart</a>
+        </nav>
+      </div>
+    </div>
+
+    <main>
+      <div class="top-trust-bar">
+        <div class="container top-trust-inner">
+          <span>Premium wall art • COD available</span>
+          <span>Fast delivery across India</span>
+          <span>UPI: Shahzaibkhan9@fam</span>
+        </div>
+      </div>
+
+      <section class="page-section">
+        <div class="container">
+          <div class="section-heading reveal">
+            <h1>Compare Products</h1>
+            <p>Side-by-side comparison to help you choose the perfect poster for your wall.</p>
+          </div>
+
+          <div id="compareContainer" class="compare-container">
+            <div class="compare-empty">
+              <p>No products selected for comparison.</p>
+              <a href="category.html?category=all" class="primary-button">Continue Shopping</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="category.html?category=all">Shop All</a></li>
+              <li><a href="category.html?category=cars">Car Posters</a></li>
+              <li><a href="category.html?category=motivation">Motivation</a></li>
+              <li><a href="track-order.html">Track Order</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Customer Care</h4>
+            <ul>
+              <li><a href="shipping-policy.html">Shipping Policy</a></li>
+              <li><a href="refund-policy.html">Refund Policy</a></li>
+              <li><a href="return-policy.html">Return Policy</a></li>
+              <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact Us</h4>
+            <ul>
+              <li><a href="https://wa.me/919372654780" target="_blank" rel="noopener">WhatsApp: 9372654780</a></li>
+              <li><a href="support.html">Help & Support</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Follow</h4>
+            <div class="social-links">
+              <a href="https://instagram.com" target="_blank" aria-label="Instagram">Instagram</a>
+              <a href="https://pinterest.com" target="_blank" aria-label="Pinterest">Pinterest</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Pixel Perfect. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div id="toastRoot" class="toast-root" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+    <script>
+      function renderComparison() {
+        const container = document.getElementById('compareContainer');
+        const compareList = productComparison.getCompareList();
+
+        if (!compareList || compareList.length === 0) {
+          container.innerHTML = `
+            <div class="compare-empty page-transition-enter">
+              <p>No products selected for comparison.</p>
+              <a href="category.html?category=all" class="primary-button">Continue Shopping</a>
+            </div>
+          `;
+          return;
+        }
+
+        const comparisonHTML = `
+          <div class="compare-table page-transition-enter">
+            <div class="compare-header">
+              <div class="compare-cell">Product</div>
+              ${compareList.map(p => `<div class="compare-cell">${p.name}</div>`).join('')}
+            </div>
+
+            <div class="compare-row">
+              <div class="compare-label">Image</div>
+              ${compareList.map(p => `
+                <div class="compare-cell">
+                  <img src="${p.image}" alt="${p.name}" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="compare-row">
+              <div class="compare-label">Price</div>
+              ${compareList.map(p => `
+                <div class="compare-cell">
+                  <strong>₹${getProductDisplayPrice(p.price)}</strong>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="compare-row">
+              <div class="compare-label">Rating</div>
+              ${compareList.map(p => `
+                <div class="compare-cell">
+                  ${p.rating ? `<span class="rating-stars">★★★★★ (${p.rating})</span>` : '<span class="muted">No ratings</span>'}
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="compare-row">
+              <div class="compare-label">Category</div>
+              ${compareList.map(p => `<div class="compare-cell">${p.category || 'General'}</div>`).join('')}
+            </div>
+
+            <div class="compare-row">
+              <div class="compare-label">In Stock</div>
+              ${compareList.map(p => `
+                <div class="compare-cell">
+                  ${p.inStock ? '<span class="badge-success">In Stock</span>' : '<span class="badge-error">Out of Stock</span>'}
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="compare-row">
+              <div class="compare-label">Action</div>
+              ${compareList.map(p => `
+                <div class="compare-cell">
+                  <button class="primary-button small add-to-cart-btn" data-product-id="${p.id}">Add to Cart</button>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="compare-row">
+              <div class="compare-label">Remove</div>
+              ${compareList.map(p => `
+                <div class="compare-cell">
+                  <button class="secondary small remove-compare-btn" data-product-id="${p.id}">Remove</button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+
+        container.innerHTML = comparisonHTML;
+
+        // Add event listeners
+        container.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const productId = parseInt(btn.dataset.productId);
+            const product = window.products.find(p => p.id === productId);
+            if (product) {
+              addToCart(productId, 'A4');
+            }
+          });
+        });
+
+        container.querySelectorAll('.remove-compare-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const productId = parseInt(btn.dataset.productId);
+            productComparison.removeFromCompare(productId);
+            renderComparison();
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderComparison);
+      } else {
+        renderComparison();
+      }
+    </script>
+  </body>
+</html>

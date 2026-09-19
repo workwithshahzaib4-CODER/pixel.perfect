@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics Dashboard - Pixel Perfect Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .analytics-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+    .analytics-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .analytics-header h1 { margin: 0; font-size: 28px; color: #111; }
+    .date-range-selector { display: flex; gap: 10px; }
+    .date-range-selector button { padding: 8px 16px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 6px; font-weight: 500; }
+    .date-range-selector button.active { background: #d6b578; color: white; border-color: #d6b578; }
+    
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .metric-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .metric-label { font-size: 12px; text-transform: uppercase; color: #999; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .metric-value { font-size: 32px; font-weight: 700; color: #111; margin-bottom: 8px; }
+    .metric-trend { font-size: 12px; color: #666; }
+    .metric-trend.positive { color: #28a745; }
+    .metric-trend.negative { color: #dc3545; }
+    
+    .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+    @media (max-width: 1024px) { .dashboard-grid { grid-template-columns: 1fr; } }
+    
+    .chart-container { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .chart-title { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #111; }
+    
+    .product-list { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .product-list-title { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #111; }
+    .product-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+    .product-row:last-child { border-bottom: none; }
+    .product-name { font-weight: 500; color: #111; }
+    .product-sales { color: #d6b578; font-weight: 600; }
+    
+    .conversion-funnel { display: flex; flex-direction: column; gap: 12px; }
+    .funnel-stage { display: flex; align-items: center; gap: 12px; }
+    .funnel-bar { flex: 1; background: linear-gradient(90deg, #d6b578, #f6d88a); height: 30px; border-radius: 6px; display: flex; align-items: center; padding: 0 12px; color: white; font-size: 12px; font-weight: 600; }
+    .funnel-label { min-width: 100px; font-size: 13px; color: #666; }
+    
+    .locations-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .locations-table th { text-align: left; padding: 10px; background: #f9f9f9; font-weight: 600; border-bottom: 2px solid #e0e0e0; }
+    .locations-table td { padding: 10px; border-bottom: 1px solid #f0f0f0; }
+    .locations-table tr:hover { background: #f9f9f9; }
+    
+    .loading { text-align: center; padding: 40px 20px; color: #999; }
+    .error-message { background: #fee; color: #c33; padding: 15px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #c33; }
+  </style>
+</head>
+<body data-page="analytics">
+  <header class="site-header admin-header">
+    <div class="container nav-shell">
+      <a class="brand" href="index.html" aria-label="Pixel Perfect home">
+        <span class="brand-wordmark">PIXEL PERFECT ADMIN</span>
+      </a>
+      <div class="header-actions">
+        <a href="Dashboard.html" class="header-link">Dashboard</a>
+        <a href="analytics.html" class="header-link" style="color: #d6b578;">Analytics</a>
+        <button class="header-link" id="adminLogoutBtn" style="background: none; border: none; cursor: pointer; padding: 0;">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="analytics-container">
+    <div class="analytics-header">
+      <h1>Analytics Dashboard</h1>
+      <div class="date-range-selector">
+        <button data-range="today" class="range-btn">Today</button>
+        <button data-range="7days" class="range-btn active">Last 7 days</button>
+        <button data-range="30days" class="range-btn">Last 30 days</button>
+        <button data-range="all" class="range-btn">All time</button>
+      </div>
+    </div>
+
+    <div id="analyticsContent" class="analytics-content">
+      <div class="loading">Loading analytics data...</div>
+    </div>
+  </div>
+
+  <script>
+    let currentRange = '7days';
+
+    async function loadAnalytics(range) {
+      const content = document.getElementById('analyticsContent');
+      content.innerHTML = '<div class="loading">Loading analytics data...</div>';
+
+      try {
+        const response = await fetch(`/api/admin/analytics?range=${range}`);
+        if (!response.ok) throw new Error('Failed to load analytics');
+        const data = await response.json();
+        renderAnalyticsDashboard(data, range);
+        updateActiveButton(range);
+      } catch (error) {
+        content.innerHTML = `<div class="error-message">Error loading analytics: ${error.message}</div>`;
+      }
+    }
+
+    function renderAnalyticsDashboard(data, range) {
+      const content = document.getElementById('analyticsContent');
+      
+      const completedOrders = data.completedOrders || 0;
+      const avgOrderValue = data.averageOrderValue || 0;
+      const conversionRate = data.conversionRate || 0;
+      const productViews = data.productViews || 0;
+      const addToCart = data.addToCartEvents || 0;
+      const checkoutStarts = data.checkoutStarts || 0;
+      const locations = data.locations || [];
+
+      const conversionFromView = productViews > 0 ? ((checkoutStarts / productViews) * 100).toFixed(1) : 0;
+      const cartToCheckout = addToCart > 0 ? ((checkoutStarts / addToCart) * 100).toFixed(1) : 0;
+      const checkoutToOrder = checkoutStarts > 0 ? ((completedOrders / checkoutStarts) * 100).toFixed(1) : 0;
+
+      content.innerHTML = `
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Completed Orders</div>
+            <div class="metric-value">${completedOrders}</div>
+            <div class="metric-trend">Last ${range === '7days' ? '7 days' : range === 'today' ? 'day' : range === '30days' ? '30 days' : 'all time'}</div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-label">Average Order Value</div>
+            <div class="metric-value">₹${Math.round(avgOrderValue)}</div>
+            <div class="metric-trend">Per order</div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-label">Product Views</div>
+            <div class="metric-value">${productViews}</div>
+            <div class="metric-trend">${conversionFromView}% → checkout</div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-label">Cart Adds</div>
+            <div class="metric-value">${addToCart}</div>
+            <div class="metric-trend">${cartToCheckout}% → checkout</div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="chart-container">
+            <div class="chart-title">Sales Conversion Funnel</div>
+            <div class="conversion-funnel">
+              <div class="funnel-stage">
+                <div class="funnel-label">Product Views</div>
+                <div class="funnel-bar" style="width: 100%;">${productViews}</div>
+              </div>
+              <div class="funnel-stage">
+                <div class="funnel-label">Add to Cart</div>
+                <div class="funnel-bar" style="width: ${productViews > 0 ? (addToCart / productViews) * 100 : 0}%;">${addToCart}</div>
+              </div>
+              <div class="funnel-stage">
+                <div class="funnel-label">Checkout Start</div>
+                <div class="funnel-bar" style="width: ${productViews > 0 ? (checkoutStarts / productViews) * 100 : 0}%;">${checkoutStarts}</div>
+              </div>
+              <div class="funnel-stage">
+                <div class="funnel-label">Order Complete</div>
+                <div class="funnel-bar" style="width: ${productViews > 0 ? (completedOrders / productViews) * 100 : 0}%;">${completedOrders}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-list">
+            <div class="product-list-title">Top Locations</div>
+            ${locations.length > 0 ? `
+              <table class="locations-table">
+                <thead>
+                  <tr>
+                    <th>City</th>
+                    <th>Orders</th>
+                    <th>Revenue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${locations.slice(0, 8).map(loc => `
+                    <tr>
+                      <td>${loc.city}</td>
+                      <td>${loc.orders}</td>
+                      <td>₹${Math.round(loc.revenue)}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            ` : '<p style="color: #999; font-size: 13px;">No location data available</p>'}
+          </div>
+        </div>
+      `;
+    }
+
+    function updateActiveButton(range) {
+      document.querySelectorAll('.range-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.range === range);
+      });
+    }
+
+    document.querySelectorAll('.range-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentRange = btn.dataset.range;
+        loadAnalytics(currentRange);
+      });
+    });
+
+    document.getElementById('adminLogoutBtn')?.addEventListener('click', async () => {
+      try {
+        await fetch('/api/admin/auth/logout', { method: 'POST' });
+        window.location.href = '/login';
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    });
+
+    // Initial load
+    loadAnalytics(currentRange);
+    // Auto-refresh every 5 minutes
+    setInterval(() => loadAnalytics(currentRange), 5 * 60 * 1000);
+  </script>
+</body>
+</html>

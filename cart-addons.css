@@ -1,0 +1,306 @@
+/* Premium Cart Add-ons Styling */
+.cart-addons {
+  display: grid;
+  gap: 16px;
+}
+
+.addons-panel {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(239,228,210,0.5));
+  border: 1px solid rgba(17,17,17,0.08);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(17,17,17,0.04);
+}
+
+.shipping-options-grid,
+.gift-options-grid,
+.payment-methods-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.shipping-option,
+.gift-option,
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,0.8);
+  border: 2px solid rgba(17,17,17,0.06);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.shipping-option:hover,
+.gift-option:hover,
+.payment-method:hover {
+  border-color: rgba(17,17,17,0.15);
+  background: rgba(17,17,17,0.02);
+}
+
+.shipping-option.selected,
+.gift-option.selected,
+.payment-method.selected {
+  border-color: #111827;
+  background: rgba(17,17,17,0.06);
+}
+
+.shipping-option input,
+.gift-option input,
+.payment-method input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #111827;
+}
+
+.shipping-option label,
+.gift-option label,
+.payment-method label {
+  flex: 1;
+  cursor: pointer;
+  margin: 0;
+}
+
+.gift-option label {
+  display: grid;
+  gap: 4px;
+}
+
+.gift-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.gift-desc {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.gift-price {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.85rem;
+}
+
+.payment-method label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.payment-icon {
+  font-size: 24px;
+}
+
+.payment-method strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.payment-method small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.discount-panel {
+  background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(34,197,94,0.04));
+  border: 1px solid rgba(34,197,94,0.15);
+}
+
+.discount-active {
+  background: rgba(34,197,94,0.1);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.discount-active .badge {
+  display: inline-block;
+  background: #22c55e;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.discount-active p {
+  margin: 0;
+  color: #16a34a;
+  font-size: 0.95rem;
+}
+
+.discount-milestone {
+  background: rgba(59,130,246,0.1);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.discount-milestone p {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+.milestone-progress {
+  display: grid;
+  gap: 0;
+  margin-bottom: 8px;
+}
+
+.milestone-progress span {
+  display: block;
+  height: 6px;
+  background: #3b82f6;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.discount-milestone small {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.discount-info {
+  background: rgba(251,146,60,0.1);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.discount-info p {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.discount-info small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.cart-reviews-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.cart-review-item {
+  background: rgba(255,255,255,0.8);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba(17,17,17,0.06);
+}
+
+.cart-review-item strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.review-stats {
+  display: flex;
+  gap: 8px;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.review-stats .rating {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.review-stats .count {
+  color: var(--muted);
+}
+
+.review-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.abandonment-modal .modal-content {
+  max-width: 400px;
+}
+
+.abandonment-content {
+  text-align: center;
+}
+
+.abandonment-content h2 {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+}
+
+.abandonment-content p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.abandonment-items {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.mini-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  background: rgba(17,17,17,0.04);
+  border-radius: 10px;
+}
+
+.mini-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.mini-item strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.mini-item small {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.abandonment-actions {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.abandonment-content small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .shipping-options-grid,
+  .gift-options-grid,
+  .payment-methods-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-method label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

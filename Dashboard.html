@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixel Perfect Admin V3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body.admin-theme-dark {
+        --admin-bg: #101312;
+        --admin-surface: #171b19;
+        --admin-surface-strong: #202622;
+        --admin-line: rgba(236, 241, 235, 0.13);
+        --admin-text: #eef3ed;
+        --admin-muted: #aebbb0;
+        --admin-input: #121715;
+        background: var(--admin-bg);
+        color: var(--admin-text);
+      }
+      body.admin-theme-dark::before { background: radial-gradient(circle at 20% 0%, rgba(111, 154, 123, 0.12), transparent 28%), radial-gradient(circle at 80% 20%, rgba(214, 181, 120, 0.06), transparent 24%); }
+      body.admin-theme-dark .site-header,
+      body.admin-theme-dark .admin-shell,
+      body.admin-theme-dark .panel,
+      body.admin-theme-dark .metric-card,
+      body.admin-theme-dark .notification-button,
+      body.admin-theme-dark .notification-panel,
+      body.admin-theme-dark .search-results,
+      body.admin-theme-dark .export-dropdown,
+      body.admin-theme-dark .modal-card { background: var(--admin-surface); color: var(--admin-text); border-color: var(--admin-line); }
+      body.admin-theme-dark .admin-shell { background: rgba(23, 27, 25, 0.88); }
+      body.admin-theme-dark .metric-card { background: linear-gradient(135deg, #202622, #171b19); }
+      body.admin-theme-dark .search-panel input,
+      body.admin-theme-dark .filter-row select,
+      body.admin-theme-dark .product-form input,
+      body.admin-theme-dark .product-form textarea,
+      body.admin-theme-dark .product-form select,
+      body.admin-theme-dark .internal-note-form textarea { background: var(--admin-input); color: var(--admin-text); border-color: var(--admin-line); }
+      body.admin-theme-dark .search-results h4,
+      body.admin-theme-dark .metric-card .eyebrow,
+      body.admin-theme-dark .chart-label,
+      body.admin-theme-dark .meta-box span,
+      body.admin-theme-dark .notification-item small,
+      body.admin-theme-dark .internal-note small,
+      body.admin-theme-dark .live-status { color: var(--admin-muted); }
+      body.admin-theme-dark .search-result-item,
+      body.admin-theme-dark .order-row,
+      body.admin-theme-dark .product-card,
+      body.admin-theme-dark .meta-box { background: var(--admin-surface-strong); border-color: var(--admin-line); }
+      body.admin-theme-dark .secondary-button.small,
+      body.admin-theme-dark .notification-button,
+      body.admin-theme-dark .tiny-button.secondary { color: var(--admin-text); border-color: var(--admin-line); background: transparent; }
+      body.admin-theme-dark .customer-table th,
+      body.admin-theme-dark .inventory-table th,
+      body.admin-theme-dark .customer-table td,
+      body.admin-theme-dark .inventory-table td,
+      body.admin-theme-dark .line-item,
+      body.admin-theme-dark .notification-item,
+      body.admin-theme-dark .internal-note { border-color: var(--admin-line); }
+
+      .admin-page {
+        padding: 32px 0 50px;
+      }
+
+      .admin-shell {
+        display: grid;
+        grid-template-columns: 228px minmax(0, 1fr);
+        gap: 22px;
+        background: rgba(255,255,255,0.78);
+        border: 1px solid rgba(17,17,17,0.08);
+        border-radius: 20px;
+        padding: 16px;
+        box-shadow: 0 24px 48px rgba(17,17,17,0.05);
+      }
+
+      .admin-sidebar {
+        background: linear-gradient(180deg, rgba(17,17,17,0.98), rgba(31, 31, 31, 0.94));
+        border-radius: 16px;
+        padding: 16px 12px;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .sidebar-brand {
+        padding: 10px 8px 6px;
+        border-bottom: 1px solid rgba(255,255,255,0.14);
+      }
+
+      .sidebar-brand .brand-wordmark {
+        display: inline-block;
+        font-size: 1rem;
+        letter-spacing: 0.12em;
+      }
+
+      .sidebar-brand small {
+        display: block;
+        margin-top: 6px;
+        color: rgba(255,255,255,0.7);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        background: transparent;
+        color: rgba(255,255,255,0.82);
+        border: 1px solid transparent;
+        border-radius: 9px;
+        padding: 10px;
+        text-align: left;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        background: rgba(255,255,255,0.08);
+        border-color: rgba(255,255,255,0.1);
+        color: #fff;
+      }
+
+      .sidebar-alert {
+        margin-top: auto;
+        border-radius: 14px;
+        background: rgba(210, 70, 70, 0.12);
+        border: 1px solid rgba(255, 106, 106, 0.22);
+        color: #ffd7d7;
+        padding: 10px 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .admin-content {
+        min-width: 0;
+      }
+
+      .admin-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        position: relative;
+      }
+
+      .dashboard-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 4px 0 20px; }
+      .dashboard-heading h1 { margin: 0; font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -0.04em; }
+      .dashboard-heading p { margin: 5px 0 0; color: var(--muted); font-size: 0.88rem; }
+      .theme-toggle { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(17,17,17,0.12); border-radius: 10px; padding: 9px 11px; background: #fff; color: var(--text); font: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+      .admin-theme-dark .theme-toggle { background: var(--admin-surface-strong); color: var(--admin-text); border-color: var(--admin-line); }
+      @media (max-width: 640px) { .dashboard-heading { align-items: flex-start; flex-direction: column; } }
+
+      .live-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .live-status::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #a7a7a7;
+      }
+
+      .live-status.connected::before { background: #3b9b68; box-shadow: 0 0 0 4px rgba(59,155,104,0.12); }
+      .notification-menu { position: relative; }
+      .notification-button {
+        position: relative;
+        width: 42px;
+        height: 42px;
+        border: 1px solid rgba(17,17,17,0.12);
+        border-radius: 11px;
+        background: #fff;
+        color: var(--text);
+        font-size: 1.05rem;
+        cursor: pointer;
+      }
+      .notification-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        border-radius: 10px;
+        background: #b94136;
+        color: #fff;
+        font-size: 0.65rem;
+        line-height: 18px;
+      }
+      .notification-panel {
+        position: absolute;
+        top: 52px;
+        right: 0;
+        z-index: 40;
+        width: min(340px, calc(100vw - 36px));
+        padding: 14px;
+        border: 1px solid rgba(17,17,17,0.1);
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 20px 45px rgba(17,17,17,0.14);
+      }
+      .notification-panel.hidden { display: none; }
+      .notification-panel h3 { margin: 0 0 10px; font-size: 0.85rem; }
+      .notification-item { padding: 10px 0; border-top: 1px solid rgba(17,17,17,0.08); font-size: 0.82rem; }
+      .notification-item small { display: block; margin-top: 4px; color: var(--muted); }
+      .live-toast {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 60;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 280px;
+        padding: 14px 16px;
+        border: 1px solid rgba(59,155,104,0.35);
+        border-radius: 13px;
+        background: #151515;
+        color: #fff;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+        animation: live-toast-in 0.35s ease both;
+      }
+      .live-toast strong { display: block; font-size: 0.9rem; }
+      .live-toast small { display: block; margin-top: 3px; color: rgba(255,255,255,0.62); }
+      .live-toast-icon { color: #85d49e; font-size: 1.3rem; }
+      @keyframes live-toast-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+      .search-panel {
+        position: relative;
+        flex: 1 1 300px;
+      }
+
+      .search-panel input {
+        width: 100%;
+        min-height: 52px;
+        padding: 0 18px;
+        border-radius: 16px;
+        border: 1px solid rgba(17,17,17,0.12);
+        background: #fff;
+        font: inherit;
+      }
+
+      .search-results {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 8px);
+        background: #fff;
+        border: 1px solid rgba(17,17,17,0.08);
+        border-radius: 16px;
+        box-shadow: 0 18px 28px rgba(17,17,17,0.08);
+        padding: 12px;
+        z-index: 30;
+      }
+
+      .search-results.hidden {
+        display: none;
+      }
+
+      .search-results h4 {
+        margin: 0 0 8px;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .search-results-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .search-result-item {
+        padding: 8px 10px;
+        border-radius: 10px;
+        background: rgba(17,17,17,0.02);
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .export-menu {
+        position: relative;
+      }
+
+      .export-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        display: none;
+        min-width: 180px;
+        background: white;
+        border-radius: 16px;
+        border: 1px solid rgba(17,17,17,0.08);
+        box-shadow: 0 18px 28px rgba(17,17,17,0.08);
+        overflow: hidden;
+        z-index: 20;
+      }
+
+      .export-menu.open .export-dropdown {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .export-option {
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        padding: 10px 12px;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .export-option:hover {
+        background: rgba(17,17,17,0.03);
+      }
+
+      .admin-view {
+        display: none;
+      }
+
+      .admin-view.active {
+        display: block;
+      }
+
+      .dashboard-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .metric-card {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(239,228,210,0.5));
+        border: 1px solid rgba(17,17,17,0.06);
+        border-radius: 18px;
+        padding: 18px;
+      }
+
+      .metric-card .eyebrow {
+        display: block;
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 0.68rem;
+      }
+
+      .metric-card strong {
+        display: block;
+        margin-top: 12px;
+        font-size: clamp(1.6rem, 2vw, 2.4rem);
+        letter-spacing: -0.06em;
+      }
+
+      .metric-card small {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+      }
+
+      .admin-toast {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 50;
+        background: #151515;
+        color: #fff;
+        border: 1px solid rgba(214,181,120,0.55);
+        border-radius: 12px;
+        padding: 14px 18px;
+        box-shadow: 0 16px 36px rgba(0,0,0,0.2);
+        animation: toast-in-out 2s ease both;
+      }
+
+      @keyframes toast-in-out {
+        0% { opacity: 0; transform: translateY(-15px); filter: blur(4px); }
+        15%, 78% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        100% { opacity: 0; transform: translateY(-8px); filter: blur(2px); }
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.8fr);
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .panel {
+        background: rgba(255,255,255,0.9);
+        border: 1px solid rgba(17,17,17,0.08);
+        border-radius: 20px;
+        padding: 18px;
+      }
+
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+
+      .panel-header h2 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .range-switcher {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .range-switcher button {
+        border-radius: 999px;
+        border: 1px solid rgba(17,17,17,0.12);
+        background: rgba(17,17,17,0.02);
+        color: var(--text);
+        padding: 7px 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .range-switcher button.active {
+        background: #111;
+        color: #fff;
+      }
+
+      .chart-bars {
+        height: 240px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 24px;
+      }
+
+      .chart-bar-wrap {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        height: 100%;
+      }
+
+      .chart-bar {
+        width: min(100%, 44px);
+        border-radius: 12px 12px 0 0;
+        background: linear-gradient(180deg, #d6b578, #111);
+        min-height: 18%;
+        box-shadow: inset 0 -10px 18px rgba(0,0,0,0.15);
+      }
+
+      .chart-label {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      .rank-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .rank-list li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(17,17,17,0.06);
+        padding-bottom: 10px;
+      }
+
+      .rank-number {
+        width: 26px;
+        height: 26px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-weight: 800;
+        background: rgba(17,17,17,0.06);
+      }
+
+      .rank-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mini-order-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .mini-order-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border: 1px solid rgba(17,17,17,0.08);
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+
+      .mini-order-item strong {
+        display: block;
+      }
+
+      .mini-order-side {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .orders-layout,
+      .customers-layout,
+      .two-column {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+        gap: 18px;
+      }
+
+      .filter-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .filter-row select,
+      .product-form input,
+      .product-form textarea,
+      .product-form select {
+        border: 1px solid rgba(17,17,17,0.12);
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px 12px;
+        font: inherit;
+      }
+
+      .orders-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .order-row {
+        border: 1px solid rgba(17,17,17,0.08);
+        border-radius: 14px;
+        padding: 12px 14px;
+        background: rgba(17,17,17,0.02);
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .order-row:hover,
+      .order-row.active {
+        border-color: rgba(17,17,17,0.14);
+        background: rgba(17,17,17,0.04);
+      }
+
+      .order-row-top,
+      .customer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .customer-table,
+      .inventory-table,
+      .products-grid {
+        width: 100%;
+      }
+
+      .customer-table table,
+      .inventory-table table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .customer-table th,
+      .inventory-table th,
+      .customer-table td,
+      .inventory-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid rgba(17,17,17,0.08);
+        text-align: left;
+      }
+
+      .customer-table tbody tr,
+      .inventory-table tbody tr {
+        cursor: pointer;
+      }
+
+      .customer-table tbody tr:hover,
+      .inventory-table tbody tr:hover {
+        background: rgba(17,17,17,0.02);
+      }
+
+      .order-detail {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .detail-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .detail-meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .meta-box {
+        border: 1px solid rgba(17,17,17,0.08);
+        border-radius: 12px;
+        padding: 12px;
+        background: rgba(17,17,17,0.02);
+      }
+
+      .meta-box span {
+        display: block;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .meta-box strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 1rem;
+      }
+
+      .line-items {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .line-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid rgba(17,17,17,0.08);
+        padding-bottom: 8px;
+      }
+
+      .status-timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .status-timeline li {
+        position: relative;
+        padding: 0 0 14px 22px;
+        border-left: 1px solid rgba(17,17,17,0.15);
+      }
+      .status-timeline li:last-child { border-left-color: transparent; padding-bottom: 0; }
+      .status-timeline li::before {
+        content: '';
+        position: absolute;
+        left: -5px;
+        top: 2px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #d6b578;
+        box-shadow: 0 0 0 4px rgba(214,181,120,0.16);
+      }
+      .status-timeline strong { display: block; font-size: 0.84rem; text-transform: capitalize; }
+      .status-timeline small { color: var(--muted); }
+      .internal-note-form { display: flex; flex-direction: column; gap: 8px; }
+      .internal-note-form textarea { width: 100%; min-height: 78px; resize: vertical; border: 1px solid rgba(17,17,17,0.12); border-radius: 10px; padding: 10px; font: inherit; }
+      .internal-note { border-top: 1px solid rgba(17,17,17,0.08); padding: 10px 0; font-size: 0.84rem; }
+      .internal-note small { display: block; margin-top: 4px; color: var(--muted); }
+
+      .status-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .status-action {
+        border: 1px solid rgba(17,17,17,0.12);
+        border-radius: 10px;
+        background: #111;
+        color: white;
+        padding: 9px 12px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .status-action.cancel {
+        background: rgba(170, 52, 52, 0.95);
+      }
+
+      .product-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .product-form .full-span {
+        grid-column: 1 / -1;
+      }
+
+      .product-form input, .product-form textarea, .product-form select {
+        width: 100%;
+      }
+
+      .product-form textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+
+      .checkbox-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .check-item {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 0.8rem;
+      }
+
+      .product-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .product-card {
+        border: 1px solid rgba(17,17,17,0.08);
+        border-radius: 14px;
+        background: rgba(17,17,17,0.02);
+        padding: 12px;
+      }
+
+      .product-card h4 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .inventory-table .inventory-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .tiny-button {
+        border: 1px solid rgba(17,17,17,0.12);
+        background: #111;
+        color: white;
+        border-radius: 10px;
+        padding: 6px 10px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .tiny-button.secondary {
+        background: rgba(17,17,17,0.04);
+        color: var(--text);
+      }
+
+      .empty-card {
+        padding: 20px;
+        border-radius: 14px;
+        border: 1px dashed rgba(17,17,17,0.2);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+      .pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; font-size: 0.8rem; color: var(--muted); }
+      .selection-box { width: 16px; height: 16px; accent-color: #111; }
+      .modal-backdrop { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; background: rgba(17,17,17,0.48); }
+      .modal-backdrop.hidden { display: none; }
+      .modal-card { width: min(680px, 100%); max-height: min(760px, calc(100vh - 40px)); overflow: auto; border-radius: 18px; background: #fff; padding: 22px; box-shadow: 0 28px 70px rgba(0,0,0,0.25); }
+      .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+      .modal-header h2 { margin: 0; font-size: 1.2rem; }
+      .modal-close { border: 0; background: transparent; font-size: 1.4rem; cursor: pointer; }
+      .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+      .product-preview { width: 72px; height: 72px; object-fit: cover; border-radius: 9px; background: #f0ede7; }
+
+      @media (max-width: 980px) {
+        .admin-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .dashboard-metrics,
+        .dashboard-grid,
+        .orders-layout,
+        .customers-layout,
+        .two-column {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .dashboard-metrics {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .product-form {
+          grid-template-columns: 1fr;
+        }
+
+        .live-status { display: none; }
+        .live-toast { right: 14px; bottom: 14px; left: 14px; min-width: 0; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .live-toast { animation: none; }
+      }
+    </style>
+  </head>
+  <body data-page="admin">
+    <header class="site-header">
+      <div class="container nav-shell">
+        <button class="menu-button" aria-label="Open menu">Menu</button>
+        <a class="brand" href="index.html" aria-label="Pixel Perfect home">
+          <span class="brand-wordmark">PIXEL PERFECT</span>
+        </a>
+        <div class="header-actions">
+          <a href="index.html" class="header-link">Home</a>
+          <a href="category.html?category=all" class="header-link">Shop</a>
+          <a href="/admin" class="header-link">Admin</a>
+          <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-page">
+      <div class="container admin-shell">
+        <aside class="admin-sidebar">
+          <div class="sidebar-brand">
+            <span class="brand-wordmark">PIXEL PERFECT</span>
+            <small>ADMIN PANEL V3</small>
+          </div>
+
+          <nav class="sidebar-nav">
+            <button class="nav-item active" data-section="dashboard"><span>📊</span> Dashboard</button>
+            <button class="nav-item" data-section="orders"><span>🛒</span> Orders</button>
+            <button class="nav-item" data-section="customers"><span>👥</span> Customers</button>
+            <button class="nav-item" data-section="products"><span>📦</span> Products</button>
+            <button class="nav-item" data-section="categories"><span>🏷️</span> Categories</button>
+            <button class="nav-item" data-section="inventory"><span>📊</span> Inventory</button>
+            <button class="nav-item" data-section="revenue"><span>💰</span> Revenue</button>
+            <button class="nav-item" data-section="reviews"><span>⭐</span> Reviews</button>
+            <button class="nav-item" data-section="coupons"><span>🎟️</span> Coupons</button>
+            <button class="nav-item" data-section="homepage"><span>🖼️</span> Homepage Manager</button>
+            <button class="nav-item" data-section="analytics"><span>📈</span> Analytics</button>
+            <button class="nav-item" data-section="staff"><span>🛡️</span> Staff</button>
+            <button class="nav-item" data-section="activity"><span>🧾</span> Activity</button>
+            <button class="nav-item" data-section="settings"><span>⚙️</span> Settings</button>
+          </nav>
+
+          <div class="sidebar-alert">🔴 <span id="pendingBadge">5</span> pending orders</div>
+        </aside>
+
+        <div class="admin-content">
+          <header class="admin-topbar">
+            <div class="search-panel">
+              <input id="globalSearch" type="text" placeholder="Search orders, customers, products..." />
+              <div id="searchResults" class="search-results hidden"></div>
+            </div>
+            <div class="top-actions">
+              <span id="liveStatus" class="live-status">Connecting</span>
+              <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch theme"><span id="themeIcon">☼</span><span id="themeLabel">Light</span></button>
+              <div id="notificationMenu" class="notification-menu">
+                <button id="notificationButton" class="notification-button" type="button" aria-label="Open notifications" aria-expanded="false">&#128276;<span id="notificationCount" class="notification-count">0</span></button>
+                <div id="notificationPanel" class="notification-panel hidden">
+                  <h3>Notifications</h3>
+                  <div id="notificationList"><div class="empty-card">No new notifications.</div></div>
+                </div>
+              </div>
+              <div id="exportMenu" class="export-menu">
+                <button class="primary-button small" type="button">Export</button>
+                <div class="export-dropdown">
+                  <button class="export-option" type="button" data-export="orders">Export orders</button>
+                  <button class="export-option" type="button" data-export="today">Export today</button>
+                  <button class="export-option" type="button" data-export="month">Export month</button>
+                  <button class="export-option" type="button" data-export="customers">Export customers</button>
+                  <button class="export-option" type="button" data-export="products">Export products</button>
+                  <button class="export-option" type="button" data-export="inventory">Export inventory</button>
+                </div>
+              </div>
+              <button id="logoutAdmin" class="secondary-button small" type="button">Logout</button>
+            </div>
+          </header>
+
+          <section id="dashboardView" class="admin-view active">
+            <div class="dashboard-heading"><div><span class="eyebrow">Store operations</span><h1>Overview</h1><p id="dashboardUpdatedAt">Live store performance</p></div></div>
+            <div class="dashboard-metrics">
+              <article class="metric-card">
+                <span class="eyebrow">Revenue</span>
+                <strong id="dashboardRevenue">₹0</strong>
+                <small>Today</small>
+              </article>
+              <article class="metric-card">
+                <span class="eyebrow">Orders</span>
+                <strong id="dashboardOrders">0</strong>
+                <small>Today</small>
+              </article>
+              <article class="metric-card">
+                <span class="eyebrow">Pending</span>
+                <strong id="dashboardPending">0</strong>
+                <small>Needs action</small>
+              </article>
+              <article class="metric-card">
+                <span class="eyebrow">Processing</span>
+                <strong id="dashboardProcessing">0</strong>
+                <small>In motion</small>
+              </article>
+              <article class="metric-card"><span class="eyebrow">Revenue</span><strong id="dashboardTotalRevenue">₹0</strong><small>All time</small></article>
+              <article class="metric-card"><span class="eyebrow">Orders</span><strong id="dashboardTotalOrders">0</strong><small>All time</small></article>
+              <article class="metric-card"><span class="eyebrow">Completed</span><strong id="dashboardCompleted">0</strong><small>Delivered</small></article>
+              <article class="metric-card"><span class="eyebrow">Customers</span><strong id="dashboardCustomers">0</strong><small>Recorded</small></article>
+              <article class="metric-card"><span class="eyebrow">Products</span><strong id="dashboardProducts">0</strong><small>Catalog</small></article>
+              <article class="metric-card"><span class="eyebrow">Low stock</span><strong id="dashboardLowStock">0</strong><small>Needs attention</small></article>
+            </div>
+
+            <div class="dashboard-grid">
+              <div class="panel">
+                <div class="panel-header">
+                  <h2>Sales chart</h2>
+                  <div class="range-switcher">
+                    <button class="active" data-range="today" type="button">Today</button>
+                    <button data-range="7days" type="button">7 days</button>
+                    <button data-range="30days" type="button">30 days</button>
+                    <button data-range="1year" type="button">1 year</button>
+                  </div>
+                </div>
+                <div id="salesChart" class="chart-bars"></div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-header">
+                  <h2>Best sellers</h2>
+                </div>
+                <ol id="bestSellerList" class="rank-list"></ol>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Recent orders</h2>
+              </div>
+              <div id="recentOrdersList" class="mini-order-list"></div>
+            </div>
+          </section>
+
+          <section id="ordersView" class="admin-view">
+            <div class="orders-layout">
+              <div class="panel">
+                <div class="panel-header">
+                  <h2>Orders</h2>
+                  <div class="filter-row">
+                    <select id="ordersStatusFilter">
+                      <option value="all">All</option>
+                      <option value="pending">Pending</option>
+                      <option value="whatsapp_contacted">WhatsApp contacted</option>
+                      <option value="payment_pending">Payment pending</option>
+                      <option value="payment_confirmed">Payment confirmed</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="processing">Processing</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="table-toolbar">
+                  <label class="check-item"><input id="selectAllOrders" class="selection-box" type="checkbox" /> Select page</label>
+                  <div class="filter-row">
+                    <select id="bulkStatusSelect"><option value="">Bulk status...</option><option value="whatsapp_contacted">WhatsApp contacted</option><option value="payment_pending">Payment pending</option><option value="payment_confirmed">Payment confirmed</option><option value="processing">Processing</option><option value="shipped">Shipped</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select>
+                    <button id="applyBulkStatus" class="tiny-button" type="button">Apply</button>
+                    <label class="tiny-button secondary" for="ordersCsvImport">Import CSV</label><input id="ordersCsvImport" type="file" accept=".csv,text/csv" hidden />
+                  </div>
+                </div>
+                <div id="ordersList" class="orders-list"></div>
+                <div class="pagination"><span id="ordersPageSummary">Page 1</span><div class="filter-row"><button id="ordersPrev" class="tiny-button secondary" type="button">Previous</button><button id="ordersNext" class="tiny-button secondary" type="button">Next</button></div></div>
+              </div>
+
+              <div class="panel">
+                <div id="orderDetail" class="order-detail"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="customersView" class="admin-view">
+            <div class="customers-layout">
+              <div class="panel">
+                <div class="panel-header">
+                  <h2>Customers</h2>
+                </div>
+                <div class="customer-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Orders</th>
+                        <th>Spent</th>
+                      </tr>
+                    </thead>
+                    <tbody id="customersTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div id="customerProfile"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="productsView" class="admin-view">
+            <div class="two-column">
+              <div class="panel">
+                <div class="panel-header">
+                  <h2>Add Product</h2>
+                </div>
+                <form id="productForm" class="product-form">
+                  <div>
+                    <label>Product Name</label>
+                    <input type="text" name="name" required />
+                  </div>
+                  <div>
+                    <label>Price</label>
+                    <input type="number" name="price" min="0" required />
+                  </div>
+                  <div>
+                    <label>Original Price</label>
+                    <input type="number" name="originalPrice" min="0" />
+                  </div>
+                  <div>
+                    <label>Discount</label>
+                    <input type="number" name="discount" min="0" value="0" />
+                  </div>
+                  <div>
+                    <label>Category</label>
+                    <select name="category">
+                      <option value="cars">Cars</option>
+                      <option value="motivation">Motivation</option>
+                      <option value="anime">Anime</option>
+                      <option value="custom">Custom</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>SKU</label>
+                    <input type="text" name="sku" />
+                  </div>
+                  <div class="full-span">
+                    <label>Description</label>
+                    <textarea name="description"></textarea>
+                  </div>
+                  <div class="full-span">
+                    <label>Image URL</label>
+                    <input type="url" name="image" />
+                  </div>
+                  <div>
+                    <label>Size</label>
+                    <input type="text" name="size" value="A4" />
+                  </div>
+                  <div>
+                    <label>Material</label>
+                    <input type="text" name="material" value="Premium matte" />
+                  </div>
+                  <div>
+                    <label>Stock</label>
+                    <input type="number" name="stock" min="0" value="10" />
+                  </div>
+                  <div class="full-span">
+                    <div class="checkbox-grid">
+                      <label class="check-item"><input type="checkbox" name="featured" /> Featured</label>
+                      <label class="check-item"><input type="checkbox" name="bestSeller" /> Best Seller</label>
+                      <label class="check-item"><input type="checkbox" name="newArrival" /> New Arrival</label>
+                    </div>
+                  </div>
+                  <div class="full-span">
+                    <button class="primary-button" type="submit">Add Product</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="panel">
+                <div class="panel-header">
+                  <h2>Products</h2>
+                </div>
+                <div id="productsList" class="product-cards"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="inventoryView" class="admin-view">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Inventory</h2>
+              </div>
+              <div class="inventory-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Stock</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="inventoryTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section id="categoriesView" class="admin-view">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Categories</h2>
+              </div>
+              <div class="empty-card">Category management is ready for the next expansion phase.</div>
+            </div>
+          </section>
+
+          <section id="revenueView" class="admin-view">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Revenue</h2>
+                <div class="filter-row">
+                  <input id="revenueFrom" type="date" aria-label="Revenue from date" />
+                  <input id="revenueTo" type="date" aria-label="Revenue to date" />
+                  <button id="loadRevenue" class="tiny-button" type="button">Apply</button>
+                  <button id="exportRevenue" class="tiny-button secondary" type="button">Download CSV</button>
+                </div>
+              </div>
+              <div id="revenueMetrics" class="detail-meta"><div class="meta-box"><span>Net sales</span><strong>₹0</strong></div><div class="meta-box"><span>Orders</span><strong>0</strong></div><div class="meta-box"><span>Average order</span><strong>₹0</strong></div><div class="meta-box"><span>Completed revenue</span><strong>₹0</strong></div></div>
+            </div>
+          </section>
+
+          <section id="reviewsView" class="admin-view">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Reviews</h2>
+                <button id="refreshReviews" class="tiny-button" type="button">Refresh</button>
+              </div>
+              <div id="reviewsModerationList" class="mini-order-list"><div class="empty-card">Loading reviews...</div></div>
+            </div>
+          </section>
+
+          <section id="couponsView" class="admin-view">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Coupons</h2>
+              </div>
+              <div class="empty-card">Coupon automation can be managed from this section.</div>
+            </div>
+          </section>
+
+          <section id="homepageView" class="admin-view">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Homepage Manager</h2>
+              </div>
+              <div class="empty-card">Homepage sections can be edited here in a future release.</div>
+            </div>
+          </section>
+
+          <section id="analyticsView" class="admin-view">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Analytics</h2>
+                <div class="filter-row"><select id="analyticsRange"><option value="7days">7 days</option><option value="30days">30 days</option><option value="year">This year</option><option value="all">All time</option></select><button id="loadAnalytics" class="tiny-button" type="button">Refresh</button></div>
+              </div>
+              <div id="analyticsMetrics" class="detail-meta"><div class="meta-box"><span>Completed orders</span><strong>0</strong></div><div class="meta-box"><span>Average order</span><strong>₹0</strong></div><div class="meta-box"><span>Product views</span><strong>0</strong></div><div class="meta-box"><span>Add to cart</span><strong>0</strong></div><div class="meta-box"><span>Checkout starts</span><strong>0</strong></div></div>
+              <div class="dashboard-grid" style="margin-top: 18px;"><div><h3>Customer locations</h3><div id="analyticsLocations" class="rank-list"></div></div><div><h3>Measurement status</h3><div class="empty-card">Visitor, view, cart, and checkout metrics appear only when tracking events are installed.</div></div></div>
+            </div>
+          </section>
+
+          <section id="staffView" class="admin-view">
+            <div class="two-column"><div class="panel"><div class="panel-header"><h2>Add staff member</h2></div><form id="staffForm" class="product-form"><input name="username" placeholder="Username" required /><input name="password" type="password" placeholder="Temporary password" minlength="8" required /><select name="role"><option value="support">Support</option><option value="manager">Manager</option><option value="admin">Admin</option></select><button class="tiny-button full-span" type="submit">Create staff account</button></form></div><div class="panel"><div class="panel-header"><h2>Team access</h2></div><div id="staffList" class="rank-list"></div></div></div>
+          </section>
+
+          <section id="activityView" class="admin-view"><div class="panel"><div class="panel-header"><h2>Activity & security</h2><button id="refreshActivity" class="tiny-button" type="button">Refresh</button></div><div id="securitySummary" class="empty-card">Loading security status...</div><div id="activityList" class="mini-order-list"></div></div></section>
+
+          <section id="settingsView" class="admin-view">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Settings</h2>
+              </div>
+              <div class="empty-card">Store and security settings belong in this section.</div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <div id="editProductModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="editProductTitle">
+      <form id="editProductForm" class="modal-card product-form">
+        <div class="modal-header full-span"><h2 id="editProductTitle">Edit product</h2><button id="closeProductModal" class="modal-close" type="button" aria-label="Close">&times;</button></div>
+        <input type="hidden" name="id" />
+        <div><label>Name</label><input name="name" required /></div>
+        <div><label>SKU</label><input name="sku" required /></div>
+        <div><label>Price</label><input name="price" type="number" min="0" required /></div>
+        <div><label>Original price</label><input name="originalPrice" type="number" min="0" /></div>
+        <div><label>Category</label><input name="category" /></div>
+        <div><label>Stock</label><input name="stock" type="number" min="0" /></div>
+        <div class="full-span"><label>Description</label><textarea name="description"></textarea></div>
+        <div><label>Image URL</label><input name="image" type="url" /></div>
+        <div><label>Upload image</label><input name="imageFile" type="file" accept="image/png,image/jpeg,image/webp" /></div>
+        <div class="full-span"><label class="check-item"><input name="active" type="checkbox" /> Active product</label></div>
+        <div class="modal-actions full-span"><button id="cancelProductModal" class="tiny-button secondary" type="button">Cancel</button><button class="tiny-button" type="submit">Save changes</button></div>
+      </form>
+    </div>
+
+    <script>
+      const currency = (value) => new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0
+      }).format(Number(value || 0));
+
+      const state = {
+        selectedOrder: null,
+        selectedCustomer: null,
+        activeSection: 'dashboard',
+        salesRange: 'today',
+        notifications: [],
+        ordersPage: 1,
+        ordersPages: 1,
+        selectedOrderIds: new Set()
+      };
+
+      const applyTheme = (theme) => {
+        const dark = theme === 'dark';
+        document.body.classList.toggle('admin-theme-dark', dark);
+        document.getElementById('themeIcon').textContent = dark ? '☾' : '☼';
+        document.getElementById('themeLabel').textContent = dark ? 'Dark' : 'Light';
+        document.getElementById('themeToggle').setAttribute('aria-pressed', String(dark));
+      };
+
+      applyTheme(localStorage.getItem('pixel-perfect-admin-theme') || 'light');
+
+      const statusClassMap = {
+        pending: 'status-pending',
+        confirmed: 'status-confirmed',
+        processing: 'status-processing',
+        shipped: 'status-shipped',
+        completed: 'status-completed',
+        cancelled: 'status-cancelled'
+      };
+
+      const setSection = (section) => {
+        state.activeSection = section;
+        document.querySelectorAll('.nav-item').forEach((button) => {
+          button.classList.toggle('active', button.dataset.section === section);
+        });
+        document.querySelectorAll('.admin-view').forEach((view) => {
+          view.classList.toggle('active', view.id === `${section}View`);
+        });
+      };
+
+      const fetchJson = async (url, options = {}) => {
+        const response = await fetch(url, {
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(options.headers || {})
+          },
+          ...options
+        });
+
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload.message || 'Request failed.');
+        }
+
+        return response.json();
+      };
+
+      const formatDate = (value) => new Date(value).toLocaleString('en-IN', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      });
+
+      const renderNotifications = () => {
+        const list = document.getElementById('notificationList');
+        const count = document.getElementById('notificationCount');
+        const unread = state.notifications.filter((notification) => !notification.read).length;
+        count.textContent = unread;
+        count.hidden = !unread;
+        list.innerHTML = state.notifications.length
+          ? state.notifications.slice(0, 8).map((notification) => `<div class="notification-item"><strong>${notification.title}</strong><small>${notification.detail}<br>${formatDate(notification.createdAt)}</small>${notification.read ? '' : `<button class="tiny-button secondary" type="button" data-read-notification="${notification.id}">Mark read</button>`}</div>`).join('')
+          : '<div class="empty-card">No new notifications.</div>';
+      };
+
+      const loadNotifications = async () => {
+        const data = await fetchJson('/api/admin/notifications');
+        state.notifications = data.notifications || [];
+        renderNotifications();
+      };
+
+      const openProductEditor = (product) => {
+        const form = document.getElementById('editProductForm');
+        Object.entries(product).forEach(([key, value]) => { if (form.elements[key] && key !== 'imageFile') form.elements[key].value = value ?? ''; });
+        form.elements.active.checked = product.active !== false;
+        document.getElementById('editProductModal').classList.remove('hidden');
+      };
+
+      const closeProductEditor = () => document.getElementById('editProductModal').classList.add('hidden');
+
+      const loadRevenue = async () => {
+        const from = document.getElementById('revenueFrom').value;
+        const to = document.getElementById('revenueTo').value;
+        const query = new URLSearchParams({ range: 'all' });
+        if (from) query.set('from', from);
+        if (to) query.set('to', `${to}T23:59:59`);
+        const report = await fetchJson(`/api/admin/revenue?${query}`);
+        const values = [report.netSales, report.orders, report.averageOrderValue, report.completedRevenue];
+        document.querySelectorAll('#revenueMetrics strong').forEach((element, index) => { element.textContent = index === 1 ? values[index] : currency(values[index]); });
+      };
+
+      const loadReviews = async () => {
+        const data = await fetchJson('/api/admin/reviews');
+        const list = document.getElementById('reviewsModerationList');
+        const reviews = data.reviews || [];
+        list.innerHTML = reviews.length ? reviews.map((review) => `
+          <div class="mini-order-item review-moderation-item">
+            <div><strong>${review.title || 'Customer review'} · ${review.rating || 0}/5</strong><small>${review.name} · ${review.productBought || 'General'} · ${review.status || 'pending'}<br>${review.review}</small></div>
+            <div class="status-actions"><button class="tiny-button" type="button" data-review-action="approve" data-review-id="${review.id}">Approve</button><button class="tiny-button secondary" type="button" data-review-action="edit" data-review-id="${review.id}">Edit</button><button class="tiny-button secondary" type="button" data-review-action="delete" data-review-id="${review.id}">Delete</button></div>
+          </div>
+        `).join('') : '<div class="empty-card">No reviews submitted yet.</div>';
+        list.querySelectorAll('[data-review-action]').forEach((button) => button.addEventListener('click', async () => {
+          const review = reviews.find((entry) => String(entry.id) === button.dataset.reviewId);
+          if (!review) return;
+          if (button.dataset.reviewAction === 'delete' && !window.confirm('Delete this review?')) return;
+          const payload = button.dataset.reviewAction === 'approve' ? { status: 'approved', approved: true, verified: true } : button.dataset.reviewAction === 'edit' ? { title: window.prompt('Review title', review.title || '') || review.title, review: window.prompt('Review text', review.review || '') || review.review } : null;
+          if (button.dataset.reviewAction === 'delete') await fetchJson(`/api/admin/reviews/${review.id}`, { method: 'DELETE' });
+          else if (payload) await fetchJson(`/api/admin/reviews/${review.id}`, { method: 'PUT', body: JSON.stringify(payload) });
+          await loadReviews();
+        }));
+      };
+
+      const loadAnalytics = async () => {
+        const data = await fetchJson(`/api/admin/analytics?range=${document.getElementById('analyticsRange').value}`);
+        const values = [data.completedOrders || 0, currency(data.averageOrderValue), data.productViews || 0, data.addToCartEvents || 0, data.checkoutStarts || 0];
+        document.querySelectorAll('#analyticsMetrics strong').forEach((element, index) => { element.textContent = values[index]; });
+        document.getElementById('analyticsLocations').innerHTML = (data.locations || []).slice(0, 8).map((location) => `<li><span>${location.city}</span><strong>${location.customers} customers · ${currency(location.revenue)}</strong></li>`).join('') || '<li>No location data yet.</li>';
+      };
+
+      const loadStaff = async () => {
+        const data = await fetchJson('/api/admin/users');
+        document.getElementById('staffList').innerHTML = (data.users || []).map((user) => `<li><span><strong>${user.username}</strong><small>${user.role}</small></span><select data-staff-role="${user.username}"><option ${user.role === 'support' ? 'selected' : ''} value="support">Support</option><option ${user.role === 'manager' ? 'selected' : ''} value="manager">Manager</option><option ${user.role === 'admin' ? 'selected' : ''} value="admin">Admin</option></select></li>`).join('');
+        document.querySelectorAll('[data-staff-role]').forEach((select) => select.addEventListener('change', async () => { await fetchJson(`/api/admin/users/${encodeURIComponent(select.dataset.staffRole)}`, { method: 'PUT', body: JSON.stringify({ role: select.value }) }); }));
+      };
+
+      const loadActivity = async () => {
+        const [activity, security] = await Promise.all([fetchJson('/api/admin/activity'), fetchJson('/api/admin/security')]);
+        document.getElementById('securitySummary').textContent = `Storage: ${security.database} · Sessions: ${security.sessionStore} · Webhook: ${security.webhook ? 'configured' : 'not configured'}`;
+        document.getElementById('activityList').innerHTML = (activity.activity || []).slice(0, 25).map((entry) => `<div class="mini-order-item"><div><strong>${entry.action}</strong><small>${entry.administrator || 'System'} · ${entry.objectType || 'system'} ${entry.objectId || ''}</small></div><small>${formatDate(entry.timestamp)}</small></div>`).join('') || '<div class="empty-card">No activity recorded yet.</div>';
+      };
+
+      const showNewOrderToast = (order) => {
+        document.querySelector('.live-toast')?.remove();
+        document.body.insertAdjacentHTML('beforeend', `<div class="live-toast" role="status"><span class="live-toast-icon">&#10003;</span><div><strong>New order received</strong><small>${order.customer || 'Customer'} · ${currency(order.total || 0)}</small></div></div>`);
+        window.setTimeout(() => document.querySelector('.live-toast')?.remove(), 5000);
+      };
+
+      const connectLiveUpdates = () => {
+        const liveStatus = document.getElementById('liveStatus');
+        if (!window.EventSource) {
+          liveStatus.textContent = 'Polling live';
+          return;
+        }
+
+        const events = new EventSource('/api/admin/events');
+        events.addEventListener('connected', () => {
+          liveStatus.textContent = 'Live';
+          liveStatus.classList.add('connected');
+        });
+        events.addEventListener('notification', async (event) => {
+          const notification = JSON.parse(event.data);
+          state.notifications = [notification, ...state.notifications.filter((entry) => entry.id !== notification.id)];
+          renderNotifications();
+          if (notification.type === 'new-order') {
+            const [orderId, customer, total] = notification.detail.split(' · ');
+            showNewOrderToast({ id: orderId, customer, total: Number(String(total).replace(/[^0-9.-]+/g, '')) });
+            await Promise.all([refreshDashboard(), refreshOrders()]);
+          }
+        });
+        events.onerror = () => {
+          liveStatus.textContent = 'Reconnecting';
+          liveStatus.classList.remove('connected');
+        };
+      };
+
+      const renderSalesChart = (chartData = []) => {
+        const chartEl = document.getElementById('salesChart');
+        if (!chartEl) return;
+
+        if (!chartData.length) {
+          chartEl.innerHTML = '<div class="empty-card">No sales recorded for this period.</div>';
+          return;
+        }
+        const max = Math.max(...chartData.map((item) => item.revenue), 1);
+
+        chartEl.innerHTML = chartData.map((item) => `
+          <div class="chart-bar-wrap">
+            <div class="chart-bar" title="${item.date}: ${item.orders} orders, ${currency(item.revenue)}" style="height: ${Math.max((item.revenue / max) * 100, 4)}%"></div>
+            <span class="chart-label">${item.date.slice(5)}</span>
+          </div>
+        `).join('');
+      };
+
+      const renderDashboard = (dashboard) => {
+        const summary = dashboard.summary || {};
+        document.getElementById('dashboardRevenue').textContent = currency(summary.todayRevenue || 0);
+        document.getElementById('dashboardOrders').textContent = summary.todayOrders || 0;
+        document.getElementById('dashboardPending').textContent = summary.pending || 0;
+        document.getElementById('dashboardProcessing').textContent = summary.processing || 0;
+        document.getElementById('dashboardTotalRevenue').textContent = currency(summary.revenue || 0);
+        document.getElementById('dashboardTotalOrders').textContent = summary.totalOrders || 0;
+        document.getElementById('dashboardCompleted').textContent = summary.delivered || 0;
+        document.getElementById('dashboardCustomers').textContent = summary.totalCustomers || 0;
+        document.getElementById('dashboardProducts').textContent = summary.products || 0;
+        document.getElementById('dashboardLowStock').textContent = summary.lowStockProducts || 0;
+        document.getElementById('pendingBadge').textContent = summary.pending || 0;
+        document.getElementById('dashboardUpdatedAt').textContent = `Updated ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · Live store performance`;
+
+        renderSalesChart(dashboard.sales || []);
+
+        const bestSellers = dashboard.bestSellers || [];
+
+        document.getElementById('bestSellerList').innerHTML = bestSellers.slice(0, 3).map((item, index) => `
+          <li>
+            <div class="rank-meta">
+              <span class="rank-number">${index + 1}</span>
+              <span>${item.name}</span>
+            </div>
+            <strong>${item.sold} sold</strong>
+          </li>
+        `).join('');
+
+        const recent = dashboard.recentOrders || [];
+        document.getElementById('recentOrdersList').innerHTML = recent.slice(0, 5).map((order) => `
+          <div class="mini-order-item">
+            <div>
+              <strong>#${order.id}</strong>
+              <small>${order.customer?.name || 'Customer'}</small>
+            </div>
+            <div class="mini-order-side">
+              <strong>${currency(order.total || 0)}</strong>
+              <span class="status-pill ${statusClassMap[(order.status || 'pending').toLowerCase()] || 'status-pending'}">${order.status || 'pending'}</span>
+            </div>
+          </div>
+        `).join('');
+      };
+
+      const renderOrdersList = (orders) => {
+        const list = document.getElementById('ordersList');
+
+        if (!orders.length) {
+          list.innerHTML = '<div class="empty-card">No orders found for this filter.</div>';
+          return;
+        }
+
+        list.innerHTML = orders.map((order) => `
+          <div class="order-row ${state.selectedOrder && state.selectedOrder.id === order.id ? 'active' : ''}" data-order-id="${order.id}">
+            <div class="order-row-top">
+              <span><input class="selection-box order-selection" type="checkbox" data-select-order="${order.id}" ${state.selectedOrderIds.has(order.id) ? 'checked' : ''} /> <strong>#${order.id}</strong></span>
+              <span class="status-pill ${statusClassMap[(order.status || 'pending').toLowerCase()] || 'status-pending'}">${order.status || 'pending'}</span>
+            </div>
+            <div class="order-row-top" style="margin-top: 8px;">
+              <span>${order.customer?.name || 'Customer'}</span>
+              <strong>${currency(order.total || 0)}</strong>
+            </div>
+          </div>
+        `).join('');
+
+        list.querySelectorAll('.order-row').forEach((row) => {
+          row.addEventListener('click', (event) => {
+            if (event.target.closest('.order-selection')) return;
+            const orderId = row.dataset.orderId;
+            const order = orders.find((item) => item.id === orderId);
+            state.selectedOrder = order;
+            renderOrdersList(orders);
+            renderOrderDetail(order);
+          });
+        });
+        list.querySelectorAll('.order-selection').forEach((checkbox) => checkbox.addEventListener('change', (event) => {
+          if (event.target.checked) state.selectedOrderIds.add(event.target.dataset.selectOrder);
+          else state.selectedOrderIds.delete(event.target.dataset.selectOrder);
+        }));
+
+        if (!state.selectedOrder && orders[0]) {
+          state.selectedOrder = orders[0];
+        }
+
+        if (state.selectedOrder) {
+          renderOrderDetail(state.selectedOrder);
+        }
+      };
+
+      const renderOrderDetail = (order) => {
+        const panel = document.getElementById('orderDetail');
+        if (!order) {
+          panel.innerHTML = '<div class="empty-card">Select an order to view details.</div>';
+          return;
+        }
+
+        const lineItems = (order.items || []).map((item) => `
+          <div class="line-item">
+            <div>
+              <strong>${item.name}</strong><br>
+              <small>${item.size || 'A4'} × ${item.quantity}</small>
+            </div>
+            <strong>${currency(item.price * item.quantity)}</strong>
+          </div>
+        `).join('');
+
+        const statusButtons = ['pending', 'confirmed', 'processing', 'shipped', 'completed'].map((status) => `
+          <button class="status-action" type="button" data-status="${status}" ${order.status === status ? 'disabled' : ''}>${status}</button>
+        `).join('');
+        const history = Array.isArray(order.statusHistory) && order.statusHistory.length
+          ? order.statusHistory
+          : [{ previousStatus: null, newStatus: order.status || 'pending', timestamp: order.createdAt }];
+        const notes = Array.isArray(order.internalNotes) ? order.internalNotes : [];
+
+        panel.innerHTML = `
+          <div class="detail-header">
+            <h2>ORDER #${order.id}</h2>
+            <span class="status-pill ${statusClassMap[(order.status || 'pending').toLowerCase()] || 'status-pending'}">${order.status || 'pending'}</span>
+          </div>
+
+          <div class="detail-meta">
+            <div class="meta-box">
+              <span>Customer</span>
+              <strong>${order.customer?.name || 'Guest'}</strong>
+            </div>
+            <div class="meta-box">
+              <span>Phone</span>
+              <strong>${order.customer?.phone || 'N/A'}</strong>
+            </div>
+            <div class="meta-box">
+              <span>Email</span>
+              <strong>${order.customer?.email || 'Not provided'}</strong>
+            </div>
+            <div class="meta-box">
+              <span>Payment</span>
+              <strong>${order.customer?.paymentMethod || 'Cash on Delivery'}</strong>
+            </div>
+          </div>
+
+          <div>
+            <h3>Shipping Address</h3>
+            <p>${[order.customer?.address, order.customer?.city, order.customer?.state, order.customer?.pincode].filter(Boolean).join(', ') || 'Address not provided'}</p>
+          </div>
+
+          <div>
+            <h3>Products</h3>
+            <div class="line-items">${lineItems}</div>
+          </div>
+
+          <div>
+            <h3>Status timeline</h3>
+            <ol class="status-timeline">
+              ${history.slice().reverse().map((entry) => `<li><strong>${entry.newStatus}</strong><small>${entry.previousStatus ? `${entry.previousStatus} → ` : ''}${formatDate(entry.timestamp)}</small></li>`).join('')}
+            </ol>
+          </div>
+
+          <div class="detail-meta">
+            <div class="meta-box"><span>Subtotal</span><strong>${currency((order.total || 0))}</strong></div>
+            <div class="meta-box"><span>Shipping</span><strong>₹50</strong></div>
+            <div class="meta-box"><span>Discount</span><strong>₹0</strong></div>
+            <div class="meta-box"><span>Total</span><strong>${currency(order.total || 0)}</strong></div>
+          </div>
+
+          <div>
+            <h3>Admin actions</h3>
+            <div class="status-actions">
+              ${statusButtons}
+              <button class="status-action cancel" type="button" data-status="cancelled">Cancel order</button>
+            </div>
+          </div>
+
+          <div>
+            <h3>Internal notes</h3>
+            <form class="internal-note-form" id="internalNoteForm">
+              <textarea name="note" maxlength="2000" placeholder="Add a private note for your team..."></textarea>
+              <button class="tiny-button" type="submit">Save note</button>
+            </form>
+            <div>${notes.slice().reverse().map((entry) => `<div class="internal-note">${entry.text}<small>${entry.administrator} · ${formatDate(entry.timestamp)}</small></div>`).join('') || '<small>No internal notes yet.</small>'}</div>
+          </div>
+        `;
+
+        panel.querySelectorAll('[data-status]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const nextStatus = button.dataset.status;
+            await updateOrderStatus(order.id, nextStatus);
+          });
+        });
+        panel.querySelector('#internalNoteForm')?.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const note = event.currentTarget.note.value.trim();
+          if (!note) return;
+          try {
+            const response = await fetchJson(`/api/admin/orders/${order.id}/notes`, { method: 'POST', body: JSON.stringify({ note }) });
+            state.selectedOrder = response.order;
+            renderOrderDetail(response.order);
+          } catch (error) {
+            window.alert(error.message || 'Unable to save note.');
+          }
+        });
+      };
+
+      const updateOrderStatus = async (orderId, nextStatus) => {
+        try {
+          const response = await fetchJson(`/api/orders/${orderId}/status`, {
+            method: 'PUT',
+            body: JSON.stringify({ status: nextStatus })
+          });
+
+          await refreshOrders();
+          if (response.order) {
+            state.selectedOrder = response.order;
+          }
+          await refreshDashboard();
+        } catch (error) {
+          alert(error.message || 'Unable to update order status.');
+        }
+      };
+
+      const renderCustomers = (customers) => {
+        const tbody = document.getElementById('customersTableBody');
+        if (!customers.length) {
+          tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No customers found.</td></tr>';
+          document.getElementById('customerProfile').innerHTML = '<div class="empty-card">Customer profile will appear here.</div>';
+          return;
+        }
+
+        tbody.innerHTML = customers.map((customer) => `
+          <tr data-customer-id="${customer.id || customer.phone || customer.name}">
+            <td>${customer.name || 'Unknown'}</td>
+            <td>${customer.phone || '—'}</td>
+            <td>${customer.orders || 0}</td>
+            <td>${currency(customer.totalSpent || 0)}</td>
+          </tr>
+        `).join('');
+
+        tbody.querySelectorAll('tr').forEach((row) => {
+          row.addEventListener('click', () => {
+            const customerId = row.dataset.customerId;
+            const customer = customers.find((item) => (item.id || item.phone || item.name) === customerId);
+            state.selectedCustomer = customer;
+            renderCustomerProfile(customer);
+          });
+        });
+
+        if (!state.selectedCustomer && customers[0]) {
+          state.selectedCustomer = customers[0];
+        }
+        renderCustomerProfile(state.selectedCustomer);
+      };
+
+      const renderCustomerProfile = (customer) => {
+        const panel = document.getElementById('customerProfile');
+        if (!customer) {
+          panel.innerHTML = '<div class="empty-card">Select a customer to view profile.</div>';
+          return;
+        }
+
+        const orders = Array.isArray(customer.orderHistory) && customer.orderHistory.length ? customer.orderHistory : [];
+        const addresses = Array.isArray(customer.addresses) && customer.addresses.length ? customer.addresses : [{ value: 'Address not provided' }];
+
+        panel.innerHTML = `
+          <div class="detail-header">
+            <h2>${(customer.name || 'Customer').toUpperCase()}</h2>
+          </div>
+          <div class="detail-meta">
+            <div class="meta-box"><span>Phone</span><strong>${customer.phone || 'N/A'}</strong></div>
+            <div class="meta-box"><span>Email</span><strong>${customer.email || 'N/A'}</strong></div>
+            <div class="meta-box"><span>Total Orders</span><strong>${customer.orders || 0}</strong></div>
+            <div class="meta-box"><span>Total Spent</span><strong>${currency(customer.totalSpent || 0)}</strong></div>
+          </div>
+          <div>
+            <h3>Shipping Addresses</h3>
+            <ul>
+              ${addresses.map((address) => `<li>${address.value || 'Address not available'}</li>`).join('')}
+            </ul>
+          </div>
+          <div>
+            <h3>Order History</h3>
+            ${orders.length ? orders.map((order) => `<div class="mini-order-item"><div><strong>${order.id}</strong><small>${order.status}</small></div><strong>${currency(order.total || 0)}</strong></div>`).join('') : '<div class="empty-card">No order history available.</div>'}
+          </div>
+        `;
+      };
+
+      const renderProducts = (products) => {
+        const list = document.getElementById('productsList');
+        if (!products.length) {
+          list.innerHTML = '<div class="empty-card">No products have been added yet.</div>';
+          return;
+        }
+
+        list.innerHTML = products.map((product) => `
+          <div class="product-card">
+            <h4>${product.name}</h4>
+            <p>${currency(product.price || 0)}</p>
+            <small>Stock: ${product.stock || 0}</small><br>
+            <small>Category: ${product.category || 'uncategorized'}</small>
+            <div class="inventory-actions" style="margin-top: 10px;">
+              <button class="tiny-button secondary" type="button" data-product-edit="${product.id}">Edit</button>
+              <button class="tiny-button secondary" type="button" data-product-edit="${product.id}">Duplicate</button>
+              <button class="tiny-button" type="button" data-product-delete="${product.id}">Delete</button>
+            </div>
+          </div>
+        `).join('');
+
+        list.querySelectorAll('[data-product-delete]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            if (!window.confirm('Delete this product?')) return;
+            await fetchJson(`/api/admin/products/${button.dataset.productDelete}`, { method: 'DELETE' });
+            await refreshProducts();
+            await refreshInventory();
+          });
+        });
+        list.querySelectorAll('[data-product-edit]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const product = products.find((entry) => entry.id === button.dataset.productEdit);
+            if (!product) return;
+            if (button.textContent.trim() === 'Edit') openProductEditor(product);
+            else {
+              await fetchJson('/api/admin/products', { method: 'POST', body: JSON.stringify({ ...product, id: `product-${Date.now()}`, name: `${product.name} Copy` }) });
+              await refreshProducts();
+              await refreshInventory();
+            }
+          });
+        });
+      };
+
+      const renderInventory = (inventory) => {
+        const tbody = document.getElementById('inventoryTableBody');
+        tbody.innerHTML = inventory.map((item) => `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.stock || 0}</td>
+            <td><span class="status-pill ${item.stock <= 0 ? 'status-cancelled' : item.stock <= 5 ? 'status-pending' : 'status-confirmed'}">${item.stock <= 0 ? 'Out of stock' : item.stock <= 5 ? 'Low stock' : 'In stock'}</span></td>
+            <td>
+              <div class="inventory-actions">
+                <button class="tiny-button" type="button" data-product-id="${item.id}" data-action="add" data-amount="10">+10</button>
+                <button class="tiny-button secondary" type="button" data-product-id="${item.id}" data-action="set" data-amount="50">Set 50</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+
+        tbody.querySelectorAll('[data-product-id]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const productId = button.dataset.productId;
+            const action = button.dataset.action;
+            const amount = Number(button.dataset.amount || 0);
+            await fetchJson(`/api/admin/inventory/${productId}`, {
+              method: 'POST',
+              body: JSON.stringify({ action, amount })
+            });
+            await refreshInventory();
+            await refreshProducts();
+          });
+        });
+      };
+
+      const refreshDashboard = async () => {
+        const dashboard = await fetchJson(`/api/admin/dashboard?range=${encodeURIComponent(state.salesRange)}`);
+        renderDashboard(dashboard);
+      };
+
+      const refreshOrders = async () => {
+        const status = document.getElementById('ordersStatusFilter')?.value || 'all';
+        const search = document.getElementById('globalSearch')?.value || '';
+        const params = new URLSearchParams();
+        if (status && status !== 'all') params.set('status', status);
+        if (search) params.set('search', search);
+        params.set('page', state.ordersPage);
+        params.set('pageSize', '10');
+        const data = await fetchJson(`/api/admin/orders?${params.toString()}`);
+        state.ordersPages = data.pagination?.pages || 1;
+        document.getElementById('ordersPageSummary').textContent = `Page ${state.ordersPage} of ${state.ordersPages} · ${data.pagination?.total || 0} orders`;
+        document.getElementById('ordersPrev').disabled = state.ordersPage <= 1;
+        document.getElementById('ordersNext').disabled = state.ordersPage >= state.ordersPages;
+        renderOrdersList(data.orders || []);
+      };
+
+      const refreshCustomers = async () => {
+        const data = await fetchJson('/api/admin/customers');
+        renderCustomers(data.customers || []);
+      };
+
+      const refreshProducts = async () => {
+        const products = await fetchJson('/api/admin/products');
+        renderProducts(products.products || []);
+      };
+
+      const refreshInventory = async () => {
+        const inventory = await fetchJson('/api/admin/inventory');
+        renderInventory(inventory.inventory || []);
+      };
+
+      document.querySelectorAll('.nav-item').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const section = button.dataset.section;
+          setSection(section);
+          if (section === 'analytics') await loadAnalytics().catch(() => {});
+          if (section === 'reviews') await loadReviews().catch(() => {});
+          if (section === 'staff') await loadStaff().catch(() => {});
+          if (section === 'activity') await loadActivity().catch(() => {});
+        });
+      });
+
+      document.getElementById('loadAnalytics')?.addEventListener('click', () => loadAnalytics().catch((error) => window.alert(error.message)));
+      document.getElementById('refreshReviews')?.addEventListener('click', () => loadReviews().catch((error) => window.alert(error.message)));
+      document.getElementById('refreshActivity')?.addEventListener('click', () => loadActivity().catch((error) => window.alert(error.message)));
+      document.getElementById('staffForm')?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        await fetchJson('/api/admin/users', { method: 'POST', body: JSON.stringify({ username: form.username.value, password: form.password.value, role: form.role.value }) });
+        form.reset();
+        await loadStaff();
+      });
+      document.getElementById('ordersCsvImport')?.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const csv = await file.text();
+        await fetchJson('/api/admin/orders/import', { method: 'POST', body: JSON.stringify({ csv }) });
+        state.ordersPage = 1;
+        await Promise.all([refreshOrders(), refreshDashboard()]);
+        event.target.value = '';
+      });
+
+      document.getElementById('themeToggle')?.addEventListener('click', () => {
+        const nextTheme = document.body.classList.contains('admin-theme-dark') ? 'light' : 'dark';
+        localStorage.setItem('pixel-perfect-admin-theme', nextTheme);
+        applyTheme(nextTheme);
+      });
+
+      document.querySelector('.range-switcher')?.addEventListener('click', (event) => {
+        const target = event.target.closest('button[data-range]');
+        if (!target) return;
+        state.salesRange = target.dataset.range;
+        document.querySelectorAll('.range-switcher button').forEach((button) => button.classList.toggle('active', button === target));
+        refreshDashboard();
+      });
+
+      document.getElementById('ordersStatusFilter')?.addEventListener('change', () => refreshOrders());
+
+      document.getElementById('ordersPrev')?.addEventListener('click', async () => { if (state.ordersPage > 1) { state.ordersPage -= 1; await refreshOrders(); } });
+      document.getElementById('ordersNext')?.addEventListener('click', async () => { if (state.ordersPage < state.ordersPages) { state.ordersPage += 1; await refreshOrders(); } });
+      document.getElementById('selectAllOrders')?.addEventListener('change', (event) => {
+        document.querySelectorAll('.order-selection').forEach((checkbox) => { checkbox.checked = event.target.checked; checkbox.checked ? state.selectedOrderIds.add(checkbox.dataset.selectOrder) : state.selectedOrderIds.delete(checkbox.dataset.selectOrder); });
+      });
+      document.getElementById('applyBulkStatus')?.addEventListener('click', async () => {
+        const status = document.getElementById('bulkStatusSelect').value;
+        if (!status || !state.selectedOrderIds.size) return;
+        await fetchJson('/api/admin/orders/bulk-status', { method: 'PUT', body: JSON.stringify({ orderIds: [...state.selectedOrderIds], status }) });
+        state.selectedOrderIds.clear();
+        document.getElementById('selectAllOrders').checked = false;
+        await Promise.all([refreshOrders(), refreshDashboard()]);
+      });
+
+      document.getElementById('notificationButton')?.addEventListener('click', () => {
+        const panel = document.getElementById('notificationPanel');
+        const button = document.getElementById('notificationButton');
+        const isHidden = panel.classList.toggle('hidden');
+        button.setAttribute('aria-expanded', String(!isHidden));
+        if (!isHidden && state.notifications.some((notification) => !notification.read)) {
+          fetchJson('/api/admin/notifications/read-all', { method: 'PUT' }).then(() => {
+            state.notifications = state.notifications.map((notification) => ({ ...notification, read: true }));
+            renderNotifications();
+          }).catch(() => {});
+        }
+      });
+      document.getElementById('notificationList')?.addEventListener('click', async (event) => {
+        const button = event.target.closest('[data-read-notification]');
+        if (!button) return;
+        await fetchJson(`/api/admin/notifications/${button.dataset.readNotification}/read`, { method: 'PUT' });
+        const notification = state.notifications.find((entry) => entry.id === button.dataset.readNotification);
+        if (notification) notification.read = true;
+        renderNotifications();
+      });
+
+      document.getElementById('closeProductModal')?.addEventListener('click', closeProductEditor);
+      document.getElementById('cancelProductModal')?.addEventListener('click', closeProductEditor);
+      document.getElementById('editProductModal')?.addEventListener('click', (event) => { if (event.target.id === 'editProductModal') closeProductEditor(); });
+      document.getElementById('editProductForm')?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const file = form.imageFile.files[0];
+        const save = async (image) => {
+          const payload = { name: form.name.value.trim(), sku: form.sku.value.trim(), price: Number(form.price.value || 0), originalPrice: Number(form.originalPrice.value || 0), category: form.category.value.trim(), stock: Number(form.stock.value || 0), description: form.description.value.trim(), image: image || form.image.value.trim(), active: form.active.checked };
+          await fetchJson(`/api/admin/products/${form.id.value}`, { method: 'PUT', body: JSON.stringify(payload) });
+          closeProductEditor();
+          await Promise.all([refreshProducts(), refreshInventory(), refreshDashboard()]);
+        };
+        if (file) { const reader = new FileReader(); reader.onload = () => save(reader.result); reader.readAsDataURL(file); } else await save();
+      });
+
+      document.getElementById('loadRevenue')?.addEventListener('click', () => loadRevenue().catch((error) => window.alert(error.message)));
+      document.getElementById('exportRevenue')?.addEventListener('click', () => {
+        const query = new URLSearchParams();
+        const from = document.getElementById('revenueFrom').value; const to = document.getElementById('revenueTo').value;
+        if (from) query.set('from', from); if (to) query.set('to', `${to}T23:59:59`);
+        window.open(`/api/admin/revenue/export?${query}`, '_blank');
+      });
+
+      document.getElementById('globalSearch')?.addEventListener('input', async () => {
+        const query = document.getElementById('globalSearch').value.trim();
+        const resultsBox = document.getElementById('searchResults');
+
+        if (!query) {
+          resultsBox.classList.add('hidden');
+          resultsBox.innerHTML = '';
+          return;
+        }
+
+        try {
+          const results = await fetchJson(`/api/admin/search?q=${encodeURIComponent(query)}`);
+          const sections = [
+            ['Orders', results.orders || []],
+            ['Customers', results.customers || []],
+            ['Products', results.products || []]
+          ];
+
+          resultsBox.innerHTML = sections.map(([label, items]) => {
+            const list = items.slice(0, 3).map((item) => {
+              if (label === 'Orders') return `<div class="search-result-item">#${item.id} · ${item.customer?.name || 'Customer'}</div>`;
+              if (label === 'Customers') return `<div class="search-result-item">${item.name} · ${item.phone || 'Phone unavailable'}</div>`;
+              return `<div class="search-result-item">${item.name} · ${item.category || 'Product'}</div>`;
+            }).join('') || '<div class="search-result-item">No results</div>';
+
+            return `<div><h4>${label}</h4><div class="search-results-list">${list}</div></div>`;
+          }).join('');
+
+          resultsBox.classList.remove('hidden');
+        } catch (error) {
+          resultsBox.classList.remove('hidden');
+          resultsBox.innerHTML = `<div class="search-result-item">${error.message}</div>`;
+        }
+      });
+
+      document.getElementById('productForm')?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const payload = {
+          name: form.name.value.trim(),
+          price: Number(form.price.value || 0),
+          originalPrice: Number(form.originalPrice.value || form.price.value || 0),
+          discount: Number(form.discount.value || 0),
+          category: form.category.value,
+          description: form.description.value.trim(),
+          image: form.image.value.trim(),
+          size: form.size.value.trim(),
+          material: form.material.value.trim(),
+          sku: form.sku.value.trim() || form.name.value.trim().toLowerCase().replace(/\s+/g, '-'),
+          stock: Number(form.stock.value || 0),
+          featured: form.featured.checked,
+          bestSeller: form.bestSeller.checked,
+          newArrival: form.newArrival.checked
+        };
+
+        await fetchJson('/api/admin/products', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        form.reset();
+        await refreshProducts();
+        await refreshInventory();
+        await loadNotifications();
+      });
+
+      document.getElementById('logoutAdmin')?.addEventListener('click', async () => {
+        try {
+          await fetchJson('/api/admin/logout', { method: 'POST' });
+          window.location.href = '/login';
+        } catch (error) {
+          alert(error.message || 'Logout failed.');
+        }
+      });
+
+      document.getElementById('exportMenu')?.addEventListener('click', (event) => {
+        const dropdown = document.getElementById('exportMenu');
+        if (event.target.closest('.primary-button')) {
+          dropdown.classList.toggle('open');
+          return;
+        }
+
+        const option = event.target.closest('[data-export]');
+        if (!option) return;
+
+        const exportType = option.dataset.export;
+        const urlMap = {
+          orders: '/api/admin/orders/export',
+          today: '/api/admin/orders/export-today',
+          month: '/api/admin/orders/export-month',
+          customers: '/api/admin/export-customers',
+          products: '/api/admin/export-products',
+          inventory: '/api/admin/export-inventory'
+        };
+
+        const url = urlMap[exportType];
+        if (!url) return;
+
+        window.open(url, '_blank');
+        dropdown.classList.remove('open');
+      });
+
+      document.addEventListener('click', (event) => {
+        const menu = document.getElementById('exportMenu');
+        if (!menu) return;
+        if (!menu.contains(event.target)) {
+          menu.classList.remove('open');
+        }
+        const notificationMenu = document.getElementById('notificationMenu');
+        if (notificationMenu && !notificationMenu.contains(event.target)) {
+          document.getElementById('notificationPanel')?.classList.add('hidden');
+          document.getElementById('notificationButton')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      const initAdmin = async () => {
+        await refreshDashboard();
+        await refreshOrders();
+        await refreshCustomers();
+        await refreshProducts();
+        await refreshInventory();
+        if (new URLSearchParams(window.location.search).get('welcome') === '1') {
+          document.body.insertAdjacentHTML('beforeend', '<div class="admin-toast" role="status">Welcome back, Shahzaib</div>');
+        }
+        renderNotifications();
+        connectLiveUpdates();
+        window.setInterval(() => refreshDashboard().catch(() => {}), 15000);
+      };
+
+      initAdmin().catch((error) => {
+        document.body.insertAdjacentHTML('beforeend', `<div style="padding: 20px; color: #a32626;">${error.message}</div>`);
+      });
+
+      if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
+      }
+    </script>
+  </body>
+</html>

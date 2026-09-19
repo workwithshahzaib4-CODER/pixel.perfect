@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixel Club Rewards - Pixel Perfect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .rewards-container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+    .rewards-card { background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%); color: #d6b578; padding: 40px; border-radius: 16px; text-align: center; margin-bottom: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+    .rewards-card h1 { margin: 0 0 10px 0; font-size: 32px; }
+    .rewards-card p { margin: 0; font-size: 14px; opacity: 0.9; }
+    
+    .points-display { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .points-metric { background: white; padding: 20px; border-radius: 12px; text-align: center; border: 1px solid #e0e0e0; }
+    .points-metric .label { font-size: 12px; text-transform: uppercase; color: #999; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .points-metric .value { font-size: 28px; font-weight: 700; color: #d6b578; }
+    .points-metric .subtext { font-size: 12px; color: #999; margin-top: 8px; }
+    
+    .tier-progress { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e0e0e0; }
+    .tier-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .tier-name { font-size: 18px; font-weight: 600; color: #111; }
+    .tier-badge { display: inline-block; padding: 6px 12px; background: #d6b578; color: white; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+    
+    .tier-bar { background: #f0f0f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 15px; }
+    .tier-bar-fill { background: linear-gradient(90deg, #d6b578, #f6d88a); height: 100%; transition: width 0.3s ease; border-radius: 4px; }
+    
+    .tier-info { font-size: 12px; color: #666; }
+    
+    .referral-section { background: white; padding: 30px; border-radius: 12px; border: 1px solid #e0e0e0; margin-bottom: 30px; }
+    .referral-title { font-size: 18px; font-weight: 600; color: #111; margin-bottom: 20px; }
+    .referral-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .referral-content { grid-template-columns: 1fr; } }
+    
+    .referral-code-box { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 2px dashed #d6b578; text-align: center; }
+    .referral-code-label { font-size: 12px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+    .referral-code { font-size: 20px; font-weight: 700; color: #d6b578; font-family: monospace; margin-bottom: 12px; }
+    .referral-btn { padding: 10px 20px; background: #d6b578; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .referral-btn:hover { background: #c39f5e; }
+    
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .benefit-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center; }
+    .benefit-icon { font-size: 32px; margin-bottom: 12px; }
+    .benefit-title { font-size: 14px; font-weight: 600; color: #111; margin-bottom: 8px; }
+    .benefit-desc { font-size: 12px; color: #666; }
+    
+    .error-box { background: #fee; color: #c33; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #c33; }
+  </style>
+</head>
+<body data-page="rewards">
+  <header class="site-header">
+    <div class="container nav-shell">
+      <button class="menu-button" aria-label="Open menu">Menu</button>
+      <a class="brand" href="index.html" aria-label="Pixel Perfect home">
+        <span class="brand-wordmark">PIXEL PERFECT</span>
+      </a>
+      <div class="header-actions">
+        <a href="index.html" class="header-link">Home</a>
+        <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-panel">
+      <button class="close-menu" aria-label="Close menu">Close</button>
+      <nav class="mobile-nav">
+        <a href="index.html">Home</a>
+        <a href="cart.html">Cart</a>
+        <a href="membership.html">Pixel Club</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="page-shell">
+    <section class="container rewards-container">
+      <div class="rewards-card">
+        <h1>🏆 Pixel Club Rewards</h1>
+        <p>Earn points with every purchase and unlock exclusive perks</p>
+      </div>
+
+      <div id="rewardsContent">
+        <div style="text-align: center; padding: 40px; color: #999;">
+          <p>Loading your rewards profile...</p>
+        </div>
+      </div>
+
+      <div class="benefits-grid" style="margin-top: 60px;">
+        <div class="benefit-card">
+          <div class="benefit-icon">💳</div>
+          <div class="benefit-title">Earn Points</div>
+          <div class="benefit-desc">1 point per ₹10 spent on every order</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">🎁</div>
+          <div class="benefit-title">Redeem Rewards</div>
+          <div class="benefit-desc">Use points for discounts on future purchases</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">👥</div>
+          <div class="benefit-title">Refer & Earn</div>
+          <div class="benefit-desc">Get points when friends buy with your code</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">👑</div>
+          <div class="benefit-title">Tier Benefits</div>
+          <div class="benefit-desc">Unlock exclusive perks at each tier level</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>Pixel Perfect</p>
+      <p>Custom posters • wall setup packs • premium prints</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    async function loadRewardsProfile() {
+      const content = document.getElementById('rewardsContent');
+      const phone = prompt('Enter your mobile number to view your rewards profile:');
+      
+      if (!phone) {
+        content.innerHTML = '<div class="error-box">Please enter your phone number to view your rewards.</div>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/loyalty/info/${encodeURIComponent(phone)}`);
+        if (!response.ok) throw new Error('Unable to load rewards profile');
+        
+        const loyaltyData = await response.json();
+        renderRewardsProfile(loyaltyData);
+      } catch (error) {
+        content.innerHTML = `<div class="error-box">${error.message}</div>`;
+      }
+    }
+
+    function renderRewardsProfile(data) {
+      const content = document.getElementById('rewardsContent');
+      const points = data.points || 0;
+      const tier = data.tier || 'standard';
+      const referralCode = data.referralCode;
+      const tierLevels = { standard: { name: 'Standard', minPoints: 0, nextPoints: 500 }, bronze: { name: 'Bronze', minPoints: 500, nextPoints: 2000 }, silver: { name: 'Silver', minPoints: 2000, nextPoints: 5000 }, gold: { name: 'Gold', minPoints: 5000, nextPoints: null } };
+      const tierInfo = tierLevels[tier] || tierLevels.standard;
+      const pointsInTier = points - tierInfo.minPoints;
+      const pointsForNextTier = tierInfo.nextPoints ? tierInfo.nextPoints - tierInfo.minPoints : null;
+      const progressPercent = pointsForNextTier ? Math.min((pointsInTier / pointsForNextTier) * 100, 100) : 100;
+
+      content.innerHTML = `
+        <div class="points-display">
+          <div class="points-metric">
+            <div class="label">Total Points</div>
+            <div class="value">${points}</div>
+            <div class="subtext">Lifetime balance</div>
+          </div>
+          <div class="points-metric">
+            <div class="label">Current Tier</div>
+            <div class="value" style="text-transform: uppercase; font-size: 18px;">${tier}</div>
+            <div class="subtext">Member status</div>
+          </div>
+          <div class="points-metric">
+            <div class="label">Referral Clicks</div>
+            <div class="value">${data.referralClicks || 0}</div>
+            <div class="subtext">People reached</div>
+          </div>
+        </div>
+
+        <div class="tier-progress">
+          <div class="tier-header">
+            <div class="tier-name">${tierInfo.name} Tier</div>
+            <div class="tier-badge">${tier.toUpperCase()}</div>
+          </div>
+          <div class="tier-bar">
+            <div class="tier-bar-fill" style="width: ${progressPercent}%"></div>
+          </div>
+          <div class="tier-info">
+            ${tierInfo.nextPoints ? `${pointsInTier} of ${pointsForNextTier} points to next tier` : 'You are at the highest tier! 🎉'}
+          </div>
+        </div>
+
+        <div class="referral-section">
+          <div class="referral-title">Earn by Referring Friends</div>
+          <div class="referral-content">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+              <p style="font-size: 12px; color: #666; margin: 0 0 12px 0;">Share your referral code with friends. When they make their first purchase using your code, you both get rewards!</p>
+            </div>
+            <div class="referral-code-box">
+              <div class="referral-code-label">Your Referral Code</div>
+              <div class="referral-code" id="referralCode">${referralCode || 'Generate'}</div>
+              <button class="referral-btn" id="copyRefBtn" onclick="copyReferralCode('${referralCode || ''}')">Copy Code</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #e8f4f8; padding: 20px; border-radius: 12px; text-align: center; margin-top: 30px;">
+          <h3 style="margin: 0 0 10px 0; color: #111;">Tier Benefits</h3>
+          <ul style="margin: 10px 0; padding: 0; list-style: none; font-size: 13px; color: #666;">
+            <li>🏅 Bronze: Free shipping on orders above ₹1500</li>
+            <li>🥈 Silver: Extra 5% off on all purchases</li>
+            <li>🥇 Gold: Extra 10% off + priority support + exclusive early access</li>
+          </ul>
+        </div>
+      `;
+    }
+
+    function copyReferralCode(code) {
+      if (!code) return alert('Generate your referral code first');
+      navigator.clipboard.writeText(code).then(() => {
+        showToast('Referral code copied!', 'success');
+      }).catch(() => {
+        alert('Referral code: ' + code);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartCount();
+      loadRewardsProfile();
+    });
+  </script>
+</body>
+</html>

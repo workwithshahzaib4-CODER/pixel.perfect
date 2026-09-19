@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poster Size Guide - Pixel Perfect</title>
+    <meta name="description" content="Choose the right Pixel Perfect poster size for your wall, desk, bedroom, or workspace." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .guide-hero, .guide-section { padding: 64px 0; }
+      .guide-hero { background: #171717; color: #fff; }
+      .guide-hero h1 { max-width: 720px; font-size: clamp(2.6rem, 6vw, 5.6rem); line-height: .92; margin: 14px 0 18px; }
+      .guide-hero p { max-width: 610px; color: rgba(255,255,255,.76); font-size: 1.08rem; }
+      .size-guide-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 30px; }
+      .size-card { background: var(--panel); border: 1px solid var(--line); padding: 22px; min-height: 300px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow); }
+      .size-card h2 { margin: 0 0 8px; }
+      .size-card p { color: var(--muted); }
+      .size-shape { width: 100%; max-width: 150px; margin: 0 auto 20px; background: #171717; border: 8px solid #d6b578; box-shadow: 10px 10px 0 #efe4d2; }
+      .size-a5 .size-shape { aspect-ratio: 1 / 1.42; max-width: 96px; }
+      .size-a4 .size-shape { aspect-ratio: 1 / 1.42; max-width: 122px; }
+      .size-a3 .size-shape { aspect-ratio: 1 / 1.42; max-width: 156px; }
+      .size-13x19 .size-shape { aspect-ratio: 13 / 19; max-width: 144px; }
+      .guide-table { width: 100%; border-collapse: collapse; margin-top: 26px; background: var(--panel); }
+      .guide-table th, .guide-table td { border-bottom: 1px solid var(--line); padding: 16px; text-align: left; }
+      .guide-table th { background: #171717; color: #fff; }
+      .guide-tips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+      .guide-tip { padding: 24px; background: var(--luxury); }
+      @media (max-width: 800px) { .size-guide-grid, .guide-tips { grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 520px) { .guide-hero, .guide-section { padding: 42px 0; } .size-guide-grid, .guide-tips { grid-template-columns: 1fr; } .guide-table { font-size: .9rem; } .guide-table th, .guide-table td { padding: 11px 8px; } }
+    </style>
+  </head>
+  <body data-page="size-guide">
+    <header class="site-header"><div class="container nav-shell"><button class="menu-button" aria-label="Open menu">Menu</button><a class="brand" href="index.html" aria-label="Pixel Perfect home"><span class="brand-wordmark">PIXEL PERFECT</span></a><div class="header-actions"><a href="index.html" class="header-link">Home</a><a href="category.html?category=all" class="header-link">Shop</a><a href="builder.html" class="header-link">Build a wall</a><a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a></div></div></header>
+    <div class="mobile-menu" id="mobileMenu"><div class="mobile-menu-panel"><button class="close-menu" aria-label="Close menu">Close</button><nav class="mobile-nav"><a href="index.html">Home</a><a href="category.html?category=all">Shop</a><a href="builder.html">Build a wall</a><a href="cart.html">Cart</a></nav></div></div>
+    <main>
+      <section class="guide-hero"><div class="container"><span class="eyebrow">Choose with confidence</span><h1>The right size changes the whole wall.</h1><p>Use this guide to choose a print that fits your room, furniture, and the feeling you want your wall to create.</p></div></section>
+      <section class="guide-section"><div class="container"><div class="section-heading"><span class="eyebrow">Print sizes</span><h2>Find your best fit</h2><p>These are the most useful sizes for single statements, gallery walls, and desk setups.</p></div><div class="size-guide-grid">
+        <article class="size-card size-a5"><div><div class="size-shape"></div><h2>A5</h2><p>14.8 x 21 cm</p></div><strong>Best for: desks, shelves, and small gallery walls</strong></article>
+        <article class="size-card size-a4"><div><div class="size-shape"></div><h2>A4</h2><p>21 x 29.7 cm</p></div><strong>Best for: bedrooms and balanced multi-print walls</strong></article>
+        <article class="size-card size-a3"><div><div class="size-shape"></div><h2>A3</h2><p>29.7 x 42 cm</p></div><strong>Best for: statement pieces above beds and desks</strong></article>
+        <article class="size-card size-13x19"><div><div class="size-shape"></div><h2>13 x 19</h2><p>33 x 48 cm</p></div><strong>Best for: large feature walls and premium setups</strong></article>
+      </div></div></section>
+      <section class="guide-section" style="background: var(--panel-muted);"><div class="container"><div class="section-heading"><span class="eyebrow">Quick decision</span><h2>Match the print to your wall</h2></div><table class="guide-table"><thead><tr><th>Wall situation</th><th>Recommended size</th><th>Why it works</th></tr></thead><tbody><tr><td>Small desk or shelf</td><td>A5</td><td>Feels intentional without overpowering the surface.</td></tr><tr><td>Bedside or study wall</td><td>A4</td><td>Flexible for pairs, grids, and themed sets.</td></tr><tr><td>Above a desk or console</td><td>A3</td><td>Creates a clear focal point from across the room.</td></tr><tr><td>Large empty wall</td><td>13 x 19</td><td>Gives a premium gallery or feature-wall presence.</td></tr></tbody></table><div class="guide-tips"><div class="guide-tip"><strong>Leave breathing room</strong><p>Keep 5 to 10 cm between prints so the wall does not feel crowded.</p></div><div class="guide-tip"><strong>Measure first</strong><p>Use masking tape to mark the outer edge before ordering a larger setup.</p></div><div class="guide-tip"><strong>Need help?</strong><p>Send us a wall photo on WhatsApp and we can recommend a layout.</p></div></div><a class="primary-button" href="https://wa.me/919372654780" target="_blank" rel="noreferrer" style="margin-top: 28px;">Ask for size advice</a></div></section>
+    </main>
+    <footer class="site-footer"><div class="container footer-content"><div><p>Pixel Perfect</p><p>Custom posters • wall setup packs • premium prints</p></div><div class="footer-links"><a href="support.html">Support</a><a href="shipping-policy.html">Shipping</a><a href="return-policy.html">Returns</a></div></div></footer>
+    <script src="script.js"></script>
+  </body>
+</html>

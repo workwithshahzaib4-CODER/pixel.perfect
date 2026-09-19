@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Private Access - Pixel Perfect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .login-page {
+        min-height: calc(100vh - 100px);
+        display: grid;
+        place-items: center;
+        padding: 48px 0;
+        background: radial-gradient(circle at 50% 20%, rgba(214,181,120,0.18), transparent 42%);
+      }
+
+      .login-card {
+        width: min(520px, calc(100% - 24px));
+        background: #151515;
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 22px;
+        padding: 34px;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+        animation: login-enter 0.6s ease both;
+      }
+
+      @keyframes login-enter {
+        from { opacity: 0; transform: translateY(18px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .login-card h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.06em;
+        text-transform: uppercase;
+      }
+
+      .login-card p {
+        margin: 0 0 22px;
+        color: rgba(255,255,255,0.62);
+        line-height: 1.7;
+      }
+
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .login-form label {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-weight: 700;
+        color: rgba(255,255,255,0.84);
+      }
+
+      .login-form input {
+        border: 1px solid rgba(255,255,255,0.16);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        border-radius: 14px;
+        padding: 13px 14px;
+        font: inherit;
+      }
+
+      .password-wrap { position: relative; }
+      .password-wrap input { padding-right: 76px; width: 100%; }
+      .password-toggle {
+        position: absolute;
+        right: 8px;
+        top: 7px;
+        border: 0;
+        border-radius: 9px;
+        padding: 8px 10px;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .login-form button[type="submit"] { width: 100%; }
+      .login-form.is-error { animation: login-shake 0.35s ease; }
+      @keyframes login-shake {
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+      }
+
+      .status-text {
+        min-height: 20px;
+        color: #d6b578;
+        font-size: 0.9rem;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .login-card, .login-form.is-error { animation: none; }
+      }
+    </style>
+  </head>
+  <body data-page="login">
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="index.html" aria-label="Pixel Perfect home">
+          <span class="brand-wordmark">PIXEL PERFECT</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="login-page">
+      <div class="login-card">
+        <span class="eyebrow">Private workspace</span>
+        <h1>Admin Login</h1>
+        <p>Secure access to the Pixel Perfect order dashboard.</p>
+
+        <form id="adminLoginForm" class="login-form">
+          <label>
+            Password
+            <div class="password-wrap">
+              <input id="adminPassword" type="password" name="password" placeholder="Enter admin password" autocomplete="current-password" required />
+              <button id="togglePassword" class="password-toggle" type="button" aria-label="Show password">Show</button>
+            </div>
+          </label>
+
+          <button type="submit" class="primary-button">Login to dashboard</button>
+          <div id="loginStatus" class="status-text" aria-live="polite"></div>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById('adminLoginForm');
+      const status = document.getElementById('loginStatus');
+      const submitButton = form.querySelector('button[type="submit"]');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const password = form.password.value;
+
+        form.classList.remove('is-error');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Checking...';
+        status.style.color = '#d6b578';
+        status.textContent = 'Checking credentials...';
+
+        try {
+          const response = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ password })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Login failed.');
+          }
+
+          status.textContent = 'Login successful. Redirecting...';
+          window.location.href = '/admin?welcome=1';
+        } catch (error) {
+          form.classList.add('is-error');
+          status.textContent = 'Invalid password. Please try again.';
+          status.style.color = '#a32626';
+          submitButton.disabled = false;
+          submitButton.textContent = 'Login to dashboard';
+        }
+      });
+
+      document.getElementById('togglePassword').addEventListener('click', () => {
+        const password = document.getElementById('adminPassword');
+        const visible = password.type === 'text';
+        password.type = visible ? 'password' : 'text';
+        document.getElementById('togglePassword').textContent = visible ? 'Show' : 'Hide';
+        document.getElementById('togglePassword').setAttribute('aria-label', `${visible ? 'Show' : 'Hide'} password`);
+      });
+    </script>
+  </body>
+</html>

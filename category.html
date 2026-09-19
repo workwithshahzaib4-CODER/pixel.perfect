@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Category - Pixel Perfect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Premium Category Page Animations */
+      @keyframes premiumCardReveal {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes luxuryCardHover {
+        0% {
+          transform: translateY(0px);
+        }
+        100% {
+          transform: translateY(-8px);
+        }
+      }
+
+      @keyframes shimmerText {
+        0% {
+          background-position: -1000px 0;
+        }
+        100% {
+          background-position: 1000px 0;
+        }
+      }
+
+      @keyframes overlayFadeIn {
+        from {
+          opacity: 0;
+          backdrop-filter: blur(0px);
+        }
+        to {
+          opacity: 1;
+          backdrop-filter: blur(4px);
+        }
+      }
+
+      @keyframes buttonGlow {
+        0%, 100% {
+          box-shadow: 0 0 8px rgba(214, 181, 120, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 16px rgba(214, 181, 120, 0.6);
+        }
+      }
+
+      @keyframes textGradientShift {
+        0%, 100% {
+          text-shadow: 0 0 20px rgba(214, 181, 120, 0);
+        }
+        50% {
+          text-shadow: 0 0 20px rgba(214, 181, 120, 0.4);
+        }
+      }
+
+      @keyframes rotateInPlace {
+        from {
+          transform: rotateZ(0deg);
+        }
+        to {
+          transform: rotateZ(360deg);
+        }
+      }
+
+      /* Premium Category Grid Styles */
+      .premium-category-shell .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 24px;
+        animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+      }
+
+      .premium-category-shell .product-card {
+        animation: premiumCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #f8f6f1 0%, #fffbf7 100%);
+        border: 1px solid rgba(214, 181, 120, 0.15);
+        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: center;
+      }
+
+      .premium-category-shell .product-card:nth-child(1) { animation-delay: 0.05s; }
+      .premium-category-shell .product-card:nth-child(2) { animation-delay: 0.1s; }
+      .premium-category-shell .product-card:nth-child(3) { animation-delay: 0.15s; }
+      .premium-category-shell .product-card:nth-child(4) { animation-delay: 0.2s; }
+      .premium-category-shell .product-card:nth-child(5) { animation-delay: 0.25s; }
+      .premium-category-shell .product-card:nth-child(6) { animation-delay: 0.3s; }
+      .premium-category-shell .product-card:nth-child(7) { animation-delay: 0.35s; }
+      .premium-category-shell .product-card:nth-child(8) { animation-delay: 0.4s; }
+      .premium-category-shell .product-card:nth-child(n+9) { animation-delay: 0.45s; }
+
+      .premium-category-shell .product-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(214, 181, 120, 0.25), 0 0 30px rgba(214, 181, 120, 0.1);
+        border-color: rgba(214, 181, 120, 0.4);
+      }
+
+      .premium-category-shell .product-card:active {
+        transform: translateY(-6px) scale(1.01);
+      }
+
+      .premium-category-shell .card-image-container {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 3 / 4;
+        background: linear-gradient(135deg, #e8dcc8 0%, #f5f0e8 100%);
+      }
+
+      .premium-category-shell .card-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: #eee9e1;
+        image-rendering: auto;
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
+      }
+
+      .premium-category-shell .product-card:hover .card-image-container img {
+        transform: scale(1.08) rotate(0.5deg);
+        filter: brightness(1.1) contrast(1.05);
+      }
+
+      .premium-category-shell .card-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0);
+        backdrop-filter: none;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 16px;
+        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        animation: overlayFadeIn 0.6s ease both;
+      }
+
+      .premium-category-shell .product-card:hover .card-overlay {
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: none;
+      }
+
+      .premium-category-shell .card-overlay-actions {
+        display: flex;
+        gap: 12px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .premium-category-shell .product-card:hover .card-overlay-actions {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .premium-category-shell .wishlist-button,
+      .premium-category-shell .compare-button {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .premium-category-shell .wishlist-button:hover,
+      .premium-category-shell .compare-button:hover {
+        transform: scale(1.15) rotate(-5deg);
+        background: rgba(214, 181, 120, 0.9) !important;
+        box-shadow: 0 6px 20px rgba(214, 181, 120, 0.4);
+      }
+
+      .premium-category-shell .wishlist-button:active,
+      .premium-category-shell .compare-button:active {
+        transform: scale(0.95);
+      }
+
+      .premium-category-shell .product-info {
+        padding: 16px;
+        animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+      }
+
+      .premium-category-shell .product-info h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        color: #2a2a2a;
+        letter-spacing: 0.3px;
+        transition: color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .premium-category-shell .product-card:hover .product-info h3 {
+        color: #d6b578;
+      }
+
+      .premium-category-shell .product-price {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #d6b578;
+        margin: 8px 0;
+        letter-spacing: 0.5px;
+      }
+
+      .premium-category-shell .product-rating {
+        font-size: 0.9rem;
+        color: #d6b578;
+        margin: 4px 0;
+      }
+
+      .premium-category-shell .product-info .primary-button {
+        width: 100%;
+        margin-top: 12px;
+        background: linear-gradient(135deg, #d6b578 0%, #c99d5e 100%);
+        border: none;
+        color: #2a2a2a;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 4px 12px rgba(214, 181, 120, 0.2);
+      }
+
+      .premium-category-shell .product-info .primary-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(214, 181, 120, 0.4);
+        background: linear-gradient(135deg, #e8c896 0%, #d6b578 100%);
+      }
+
+      .premium-category-shell .product-info .primary-button:active {
+        transform: translateY(0px);
+      }
+
+      /* Hero and toolbar animations */
+      .premium-category-hero .editorial-header {
+        animation: slideDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .premium-category-hero .editorial-kicker {
+        font-size: 0.85rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #d6b578;
+        margin-bottom: 16px;
+        animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+      }
+
+      .premium-category-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+      }
+
+      .premium-category-hero > div > p {
+        font-size: 1.1rem;
+        color: #4b4b4b;
+        line-height: 1.6;
+        animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+      }
+
+      .exclusive-banner {
+        animation: slideDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .exclusive-banner:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(214, 181, 120, 0.25);
+      }
+
+      .toolbar {
+        animation: slideDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+      }
+
+      .toolbar .chip-group,
+      .toolbar .controls {
+        animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+      }
+
+      .toolbar .chip {
+        animation: chipBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .toolbar .chip:hover {
+        transform: scale(1.08) translateY(-2px);
+      }
+
+      .results-bar {
+        animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+      }
+
+      /* Page transition effects */
+      @keyframes pageSlideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .page-shell {
+        animation: pageSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+    </style>
+  </head>
+  <body data-page="category">
+    <header class="site-header">
+      <div class="container nav-shell">
+        <button class="menu-button" aria-label="Open menu">Menu</button>
+        <a class="brand" href="index.html" aria-label="Pixel Perfect home">
+          <span class="brand-wordmark">PIXEL PERFECT</span>
+        </a>
+        <div class="header-actions">
+          <a href="index.html" class="header-link">Home</a>
+          <a href="category.html?category=all" class="header-link">Shop</a>
+          <a href="category.html?category=all&amp;collection=Cars%2C%20Bikes%20%26%20Racing" class="header-link">Cars, Bikes &amp; Racing</a>
+          <a href="category.html?category=cars" class="header-link">Cars</a>
+          <a href="category.html?category=gaming" class="header-link">Gaming</a>
+          <a href="category.html?category=motivation" class="header-link">Motivation</a>
+          <a href="support.html" class="header-link">Support</a>
+          <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-panel">
+        <button class="close-menu" aria-label="Close menu">Close</button>
+        <nav class="mobile-nav">
+          <a href="index.html">Home</a>
+          <a href="category.html?category=all">All Posters</a>
+          <a href="category.html?category=all&amp;collection=Cars%2C%20Bikes%20%26%20Racing">Cars, Bikes &amp; Racing</a>
+          <a href="category.html?category=cars">Cars</a>
+          <a href="category.html?category=gaming">Gaming</a>
+          <a href="category.html?category=motivation">Motivation</a>
+          <a href="support.html">Support</a>
+          <a href="cart.html">Cart</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="page-shell premium-category-shell">
+      <section class="shop-shell premium-category-hero">
+        <div class="container editorial-header reveal">
+          <div class="editorial-kicker">Luxury collections</div>
+          <h1 id="categoryTitle">All Posters</h1>
+          <p>Curated wall setups built for premium rooms, gaming corners, and statement car-inspired spaces.</p>
+          <div class="racing-collection-note" id="racingCollectionNote">
+            <strong>Cars, Bikes &amp; Racing</strong>
+            <span>Sharp vinyl stickers for helmets, laptops, toolboxes, bikes, and everyday surfaces.</span>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="exclusive-banner reveal">
+            <div>
+              <span>Member pricing</span>
+              <strong>Up to 12% off premium wall packs</strong>
+            </div>
+            <a href="#productGrid">Browse the collection</a>
+          </div>
+        </div>
+
+        <div class="toolbar container">
+          <div class="chip-group" id="categoryChips" aria-label="Select poster category"></div>
+          <div class="controls">
+            <input id="searchInput" list="searchSuggestions" type="text" placeholder="Search posters..." aria-label="Search posters" />
+            <datalist id="searchSuggestions"></datalist>
+            <select id="sortSelect" aria-label="Sort posters">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="newest">Newest</option>
+              <option value="rating">Best Rated</option>
+              <option value="popular">Most Popular</option>
+            </select>
+            <select id="priceFilter" aria-label="Filter by price">
+              <option value="all">All Prices</option>
+              <option value="under-200">Under ₹200</option>
+              <option value="200-399">₹200 - ₹399</option>
+              <option value="400-plus">₹400+</option>
+            </select>
+            <select id="materialFilter" aria-label="Filter by material">
+              <option value="all">All Materials</option>
+              <option value="premium waterproof vinyl">Waterproof Vinyl</option>
+              <option value="matte paper">Matte Paper</option>
+              <option value="gloss paper">Gloss Paper</option>
+            </select>
+            <a href="compare.html" class="secondary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 16px; border: 1px solid #e9e1d4; border-radius: 8px;">
+              📊 Compare <span id="compareCount">0</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="results-bar container">
+          <span id="resultCount">0 products</span>
+          <button id="clearFiltersBtn" class="secondary" style="display: none;">Clear Filters</button>
+        </div>
+
+        <div class="container">
+          <div id="productGrid" class="product-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <div>
+          <p>Pixel Perfect</p>
+          <p>Custom posters • wall setup packs • premium prints</p>
+        </div>
+        <div class="footer-links">
+          <a href="support.html">Support</a>
+          <a href="category.html?category=all">Shop</a>
+          <a href="https://wa.me/919372654780" target="_blank" rel="noreferrer">WhatsApp</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      // Enhanced category page with search and filtering
+      function renderCategoryPage() {
+        const params = new URLSearchParams(window.location.search);
+        const selectedCategory = params.get('category') || 'all';
+        
+        // Update filter
+        searchFiltering.setFilter('category', selectedCategory);
+        
+        // Render category chips
+        const chipsContainer = document.getElementById('categoryChips');
+        const categories = ['all', 'cars', 'bikes', 'gaming', 'motivation'];
+        
+        chipsContainer.innerHTML = categories.map(cat => `
+          <button class="chip ${cat === selectedCategory ? 'active' : ''}" data-category="${cat}">
+            ${cat.charAt(0).toUpperCase() + cat.slice(1)}
+          </button>
+        `).join('');
+        
+        chipsContainer.querySelectorAll('.chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const category = chip.dataset.category;
+            window.location.href = `category.html?category=${category}`;
+          });
+        });
+        
+        // Setup search input with debounce
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', performanceUtils.debounce((e) => {
+          searchFiltering.setFilter('searchQuery', e.target.value);
+          renderProducts();
+        }, 300));
+        
+        // Setup sort select
+        const sortSelect = document.getElementById('sortSelect');
+        sortSelect.addEventListener('change', (e) => {
+          searchFiltering.setFilter('sortBy', e.target.value);
+          renderProducts();
+        });
+        
+        // Setup price filter
+        const priceFilter = document.getElementById('priceFilter');
+        priceFilter.addEventListener('change', (e) => {
+          const value = e.target.value;
+          if (value === 'all') {
+            searchFiltering.setFilter('priceMin', 0);
+            searchFiltering.setFilter('priceMax', 10000);
+          } else if (value === 'under-200') {
+            searchFiltering.setFilter('priceMin', 0);
+            searchFiltering.setFilter('priceMax', 200);
+          } else if (value === '200-399') {
+            searchFiltering.setFilter('priceMin', 200);
+            searchFiltering.setFilter('priceMax', 399);
+          } else if (value === '400-plus') {
+            searchFiltering.setFilter('priceMin', 400);
+            searchFiltering.setFilter('priceMax', 10000);
+          }
+          renderProducts();
+        });
+        
+        // Setup clear filters button
+        const clearBtn = document.getElementById('clearFiltersBtn');
+        clearBtn.addEventListener('click', () => {
+          searchFiltering.clearFilters();
+          searchFiltering.setFilter('category', selectedCategory);
+          searchInput.value = '';
+          sortSelect.value = 'featured';
+          priceFilter.value = 'all';
+          renderProducts();
+          clearBtn.style.display = 'none';
+        });
+        
+        function renderProducts() {
+          const grid = document.getElementById('productGrid');
+          const results = searchFiltering.applyFilters().filter((product) => selectedCategory !== 'all' || (!/sticker|decal|glitter/i.test(`${product.name} ${product.description || ''}`) && product.category !== 'lifestyle'));
+          const countEl = document.getElementById('resultCount');
+          const compareCount = document.getElementById('compareCount');
+          
+          countEl.textContent = `${results.length} product${results.length !== 1 ? 's' : ''}`;
+          compareCount.textContent = productComparison.compareList.length > 0 ? productComparison.compareList.length : '';
+          
+          // Show/hide clear filters button
+          if (searchFiltering.getActiveFilters().length > 0) {
+            clearBtn.style.display = 'inline-block';
+          } else {
+            clearBtn.style.display = 'none';
+          }
+          
+          if (results.length === 0) {
+            grid.innerHTML = `
+              <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                <p style="color: #4b4b4b; font-size: 1.1rem; margin-bottom: 24px;">No products found matching your filters.</p>
+                <button class="primary-button" onclick="searchFiltering.clearFilters(); window.location.reload();">Reset Filters</button>
+              </div>
+            `;
+            return;
+          }
+          
+          grid.innerHTML = results.map((product, index) => {
+            const basePrice = product.sizes && product.sizes[0] ? product.sizes[0].price : product.price || 0;
+            const displayPrice = isMemberMode() ? Math.round(basePrice * 0.88) : basePrice;
+            return `
+            <div class="product-card" data-product-id="${product.id}" style="animation-delay: ${index * 0.05}s">
+              ${renderCardGallery(product)}
+              <div class="card-image-overlay-content">
+                <div class="card-overlay">
+                  <div class="card-overlay-actions">
+                    <button class="wishlist-button" data-wishlist-id="${product.id}" title="Add to wishlist" aria-label="Add to wishlist">♡</button>
+                    <button class="compare-button" data-product-id="${product.id}" title="Compare products" aria-label="Compare">📊</button>
+                  </div>
+                </div>
+              </div>
+              <div class="product-info">
+                <h3>${product.name}</h3>
+                <p class="product-price">₹${displayPrice}</p>
+                ${product.rating ? `<p class="product-rating">★${product.rating.toFixed(1)}</p>` : ''}
+                <div class="size-row">
+                  <label for="category-size-${product.id}">Size</label>
+                  <select class="size-select" id="category-size-${product.id}">
+                    ${(product.sizes || []).map((size) => `<option value="${size.label}">${size.label} - ₹${isMemberMode() ? Math.round(Number(size.price) * 0.88) : size.price}</option>`).join('')}
+                  </select>
+                </div>
+                <button class="primary-button" data-product-id="${product.id}">Add to Cart</button>
+              </div>
+            </div>
+          `;
+          }).join('');
+          
+          // Add event listeners to wishlist buttons
+          grid.querySelectorAll('.wishlist-button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              toggleWishlist(parseInt(btn.dataset.wishlistId));
+            });
+          });
+
+          grid.querySelectorAll('.primary-button[data-product-id]').forEach((button) => {
+            button.addEventListener('click', (event) => {
+              event.preventDefault();
+              const sizeSelect = document.getElementById(`category-size-${button.dataset.productId}`);
+              addToCart(button.dataset.productId, sizeSelect?.value || 'A4');
+            });
+          });
+
+          initCardGalleries(grid);
+          
+          // Add event listeners to compare buttons
+          grid.querySelectorAll('.compare-button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const productId = btn.dataset.productId;
+              if (productComparison.isInCompare(productId)) {
+                productComparison.removeFromCompare(productId);
+                btn.style.opacity = '0.5';
+                btn.style.background = 'rgba(255, 255, 255, 0.95)';
+              } else {
+                productComparison.addToCompare(productId);
+                btn.style.opacity = '1';
+                btn.style.background = '#d6b578';
+              }
+              compareCount.textContent = productComparison.compareList.length > 0 ? productComparison.compareList.length : '';
+            });
+            
+            // Highlight if already in comparison
+            if (productComparison.isInCompare(btn.dataset.productId)) {
+              btn.style.opacity = '1';
+              btn.style.background = '#d6b578';
+            } else {
+              btn.style.opacity = '0.5';
+            }
+          });
+          
+          updateWishlistButtons();
+        }
+        
+        // Initial render
+        renderProducts();
+      }
+
+      // Update category title
+      function updateCategoryTitle() {
+        const params = new URLSearchParams(window.location.search);
+        const category = params.get('category') || 'all';
+        const titleEl = document.getElementById('categoryTitle');
+        
+        const titles = {
+          'all': 'All Posters',
+          'cars': 'Car Posters',
+          'bikes': 'Bike Posters',
+          'gaming': 'Gaming Posters',
+          'motivation': 'Motivation Posters'
+        };
+        
+        titleEl.textContent = titles[category] || 'All Posters';
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        updateCategoryTitle();
+
+        if (typeof window.waitForProducts === 'function') {
+          window.waitForProducts(() => {
+            renderCategoryPage();
+          });
+        } else {
+          setTimeout(() => {
+            renderCategoryPage();
+          }, 500);
+        }
+      });
+    </script>

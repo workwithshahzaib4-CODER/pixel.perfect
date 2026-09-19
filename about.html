@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Pixel Perfect</title>
+    <meta name="description" content="Learn the story behind Pixel Perfect premium posters and wall setup packs." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .about-hero { padding: 76px 0; background: #171717; color: #fff; }
+      .about-hero h1 { max-width: 800px; font-size: clamp(2.8rem, 7vw, 6.4rem); line-height: .9; margin: 14px 0 20px; }
+      .about-hero p { max-width: 650px; color: rgba(255,255,255,.78); font-size: 1.1rem; }
+      .about-section { padding: 70px 0; }
+      .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 54px; align-items: center; }
+      .about-copy p { color: var(--muted); font-size: 1.08rem; line-height: 1.7; }
+      .about-art { min-height: 410px; background: linear-gradient(135deg, #d6b578 0 42%, #171717 42% 100%); position: relative; padding: 28px; display: grid; place-items: end; }
+      .about-art::after { content: "PIXEL\A PERFECT"; white-space: pre; font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; line-height: .8; color: #fff; letter-spacing: -.04em; }
+      .about-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+      .about-value { border-top: 2px solid var(--text); padding-top: 18px; }
+      .about-value strong { display: block; font-size: 1.25rem; margin-bottom: 8px; }
+      .about-value p { color: var(--muted); margin: 0; }
+      @media (max-width: 720px) { .about-section { padding: 46px 0; } .about-grid, .about-values { grid-template-columns: 1fr; gap: 26px; } .about-art { min-height: 280px; } }
+    </style>
+  </head>
+  <body data-page="about">
+    <header class="site-header"><div class="container nav-shell"><button class="menu-button" aria-label="Open menu">Menu</button><a class="brand" href="index.html" aria-label="Pixel Perfect home"><span class="brand-wordmark">PIXEL PERFECT</span></a><div class="header-actions"><a href="index.html" class="header-link">Home</a><a href="category.html?category=all" class="header-link">Shop</a><a href="support.html" class="header-link">Support</a><a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a></div></div></header>
+    <div class="mobile-menu" id="mobileMenu"><div class="mobile-menu-panel"><button class="close-menu" aria-label="Close menu">Close</button><nav class="mobile-nav"><a href="index.html">Home</a><a href="category.html?category=all">Shop</a><a href="support.html">Support</a><a href="cart.html">Cart</a></nav></div></div>
+    <main>
+      <section class="about-hero"><div class="container"><span class="eyebrow">The story behind the wall</span><h1>Premium art for rooms that feel like you.</h1><p>Pixel Perfect started with a simple belief: a blank wall is not empty space. It is an opportunity to show your taste, energy, and story.</p></div></section>
+      <section class="about-section"><div class="container about-grid"><div class="about-copy"><span class="eyebrow">Built in India</span><h2>Hi, I am Shahzaib.</h2><p>I am a graphic designer and student building Pixel Perfect to make premium-looking wall art more accessible. I design collections for car lovers, gamers, sports fans, and anyone creating a room that feels personal.</p><p>Every setup is selected with attention to composition, print clarity, and how the pieces work together on a real wall. The goal is simple: make ordering feel easy and the final room feel worth it.</p><a class="primary-button" href="category.html?category=all">Explore the collection</a></div><div class="about-art" aria-label="Pixel Perfect brand artwork"></div></div></section>
+      <section class="about-section" style="background: var(--panel-muted);"><div class="container"><div class="section-heading"><span class="eyebrow">What we care about</span><h2>A better experience from screen to wall.</h2></div><div class="about-values"><article class="about-value"><strong>Curated, not crowded</strong><p>Collections are organized around moods and identities, so finding your style is faster.</p></article><article class="about-value"><strong>Clear before you buy</strong><p>Simple sizes, product details, COD availability, and WhatsApp support remove guesswork.</p></article><article class="about-value"><strong>Made for real rooms</strong><p>We think about scale, spacing, color, and how a print actually lives in your space.</p></article></div></div></section>
+      <section class="about-section"><div class="container"><div class="section-heading"><span class="eyebrow">Our promise</span><h2>Make the wall worth looking at.</h2><p>From a single motivational print to a complete garage-inspired setup, Pixel Perfect is here to help you build a space with a point of view.</p><a class="secondary-button" href="support.html">Talk to the team</a></div></div></section>
+    </main>
+    <footer class="site-footer"><div class="container footer-content"><div><p>Pixel Perfect</p><p>Custom posters • wall setup packs • premium prints</p></div><div class="footer-links"><a href="support.html">Support</a><a href="shipping-policy.html">Shipping</a><a href="return-policy.html">Returns</a><a href="privacy-policy.html">Privacy</a></div></div></footer>
+    <script src="script.js"></script>
+  </body>
+</html>

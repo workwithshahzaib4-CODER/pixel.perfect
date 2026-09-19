@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Build Your Wall - Pixel Perfect</title>
+    <meta name="description" content="Design a wall poster setup for your space." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="builder">
+    <header class="site-header">
+      <div class="container nav-shell">
+        <button class="menu-button" aria-label="Open menu">Menu</button>
+        <a class="brand" href="index.html" aria-label="Pixel Perfect home"><span class="brand-wordmark">PIXEL PERFECT</span></a>
+        <div class="header-actions">
+          <a href="index.html" class="header-link">Home</a>
+          <a href="category.html?category=all" class="header-link">Shop</a>
+          <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-panel">
+        <button class="close-menu" aria-label="Close menu">Close</button>
+        <nav class="mobile-nav"><a href="index.html">Home</a><a href="category.html?category=all">Shop</a><a href="cart.html">Cart</a></nav>
+      </div>
+    </div>
+
+    <main class="page-shell">
+      <section class="container builder-shell">
+        <div class="builder-heading reveal">
+          <span class="eyebrow">Pixel Perfect Studio</span>
+          <h1>Design a wall that feels like yours.</h1>
+          <p>Choose a mood, layout, and print size. We will turn your idea into a curated poster pack.</p>
+        </div>
+        <div class="builder-layout">
+          <div class="builder-controls reveal">
+            <fieldset class="builder-fieldset">
+              <legend>1. Choose a theme</legend>
+              <div class="builder-choice-grid">
+                <label class="builder-choice"><input type="radio" name="builderTheme" value="cars" checked /><span>Cars</span></label>
+                <label class="builder-choice"><input type="radio" name="builderTheme" value="gaming" /><span>Gaming</span></label>
+                <label class="builder-choice"><input type="radio" name="builderTheme" value="motivation" /><span>Motivation</span></label>
+                <label class="builder-choice"><input type="radio" name="builderTheme" value="minimal" /><span>Minimal</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="builder-fieldset">
+              <legend>2. Choose a layout</legend>
+              <div class="builder-choice-grid">
+                <label class="builder-choice"><input type="radio" name="builderLayout" value="grid" checked /><span>Balanced grid</span></label>
+                <label class="builder-choice"><input type="radio" name="builderLayout" value="feature" /><span>Feature wall</span></label>
+                <label class="builder-choice"><input type="radio" name="builderLayout" value="gallery" /><span>Gallery row</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="builder-fieldset">
+              <legend>3. Choose print size</legend>
+              <select id="builderSize" class="large-select">
+                <option value="A5">A5 - compact</option>
+                <option value="A4" selected>A4 - most popular</option>
+                <option value="A3">A3 - statement</option>
+              </select>
+            </fieldset>
+            <label class="builder-fieldset builder-range-label" for="builderCount">4. Number of posters <output id="builderCountValue">9</output>
+              <input id="builderCount" type="range" min="3" max="16" value="9" />
+            </label>
+            <div class="builder-summary" aria-live="polite">
+              <span>Estimated starting price</span>
+              <strong id="builderPrice">₹549</strong>
+              <small>Final artwork selection and delivery are confirmed on WhatsApp.</small>
+            </div>
+            <a id="builderOrderButton" class="primary-button" href="https://wa.me/919372654780" target="_blank" rel="noreferrer">Discuss this setup on WhatsApp</a>
+          </div>
+          <div class="builder-preview-panel reveal">
+            <div class="builder-preview-topline"><span>Live preview</span><strong id="builderPreviewLabel">Cars · Balanced grid</strong></div>
+            <div id="builderPreview" class="builder-preview" data-layout="grid" data-theme="cars" aria-label="Wall setup preview"></div>
+            <div class="builder-preview-note"><span id="builderPreviewSize">A4 prints</span><span id="builderPreviewCount">9 posters</span><span>Curated in India</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-content"><p>Pixel Perfect</p><p>Custom posters • wall setup packs • premium prints</p></div></footer>
+    <script src="script.js"></script>
+  </body>
+</html>
